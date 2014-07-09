@@ -1,0 +1,56 @@
+diff --git a/psplash-colors.h b/psplash-colors.h
+index d701089..482ec7c 100644
+--- a/psplash-colors.h
++++ b/psplash-colors.h
+@@ -20,7 +20,7 @@
+ #define _HAVE_PSPLASH_COLORS_H
+ 
+ /* This is the overall background color */
+-#define PSPLASH_BACKGROUND_COLOR 0xec,0xec,0xe1
++#define PSPLASH_BACKGROUND_COLOR 0xFF,0xFF,0xFF
+ 
+ /* This is the color of any text output */
+ #define PSPLASH_TEXT_COLOR 0x6d,0x6d,0x70
+@@ -29,6 +29,6 @@
+ #define PSPLASH_BAR_COLOR 0x6d,0x6d,0x70
+ 
+ /* This is the color of the progress bar background */
+-#define PSPLASH_BAR_BACKGROUND_COLOR 0xec,0xec,0xe1
++#define PSPLASH_BAR_BACKGROUND_COLOR 0xFF,0xFF,0xFF
+ 
+ #endif
+diff --git a/psplash.c b/psplash.c
+index 09cf0d0..9dcaeba 100644
+--- a/psplash.c
++++ b/psplash.c
+@@ -263,18 +263,18 @@ main (int argc, char** argv)
+ 	  goto fb_fail;
+   }
+ 
+-  /* Clear the background with #ecece1 */
+-  psplash_fb_draw_rect (fb, 0, 0, fb->width, fb->height,
+-                        PSPLASH_BACKGROUND_COLOR);
+-
+-  /* Draw the Poky logo  */
+-  psplash_fb_draw_image (fb, 
+-			 (fb->width  - POKY_IMG_WIDTH)/2, 
+-			 ((fb->height * 5) / 6 - POKY_IMG_HEIGHT)/2,
+-			 POKY_IMG_WIDTH,
+-			 POKY_IMG_HEIGHT,
+-			 POKY_IMG_BYTES_PER_PIXEL,
+-			 POKY_IMG_RLE_PIXEL_DATA);
++//  /* Clear the background with #ecece1 */
++//  psplash_fb_draw_rect (fb, 0, 0, fb->width, fb->height,
++//                        PSPLASH_BACKGROUND_COLOR);
++//
++//  /* Draw the Poky logo  */
++//  psplash_fb_draw_image (fb,
++//			 (fb->width  - POKY_IMG_WIDTH)/2,
++//			 ((fb->height * 5) / 6 - POKY_IMG_HEIGHT)/2,
++//			 POKY_IMG_WIDTH,
++//			 POKY_IMG_HEIGHT,
++//			 POKY_IMG_BYTES_PER_PIXEL,
++//			 POKY_IMG_RLE_PIXEL_DATA);
+ 
+   /* Draw progress bar border */
+   psplash_fb_draw_image (fb, 
