@@ -1,0 +1,30 @@
+#ATTENZIONE!! OGNI VOLTA CHE SI MODIFICA QUESTO FILE
+#RICORDARSI DI TENERE AGGIORNATA LA SUA COPIA IN meta-egf/conf/local.conf.egf
+MACHINE ??= '0457evbimx6q'
+DISTRO ?= 'pokyegf'
+EXTRA_IMAGE_FEATURES = "debug-tweaks"
+USER_CLASSES ?= "buildstats image-mklibs"
+PATCHRESOLVE = "noop"
+BB_DISKMON_DIRS = "\
+    STOPTASKS,${TMPDIR},1G,100K \
+    STOPTASKS,${DL_DIR},1G,100K \
+    STOPTASKS,${SSTATE_DIR},1G,100K \
+    ABORT,${TMPDIR},100M,1K \
+    ABORT,${DL_DIR},100M,1K \
+    ABORT,${SSTATE_DIR},100M,1K" 
+PACKAGECONFIG_append_pn-qemu-native = " sdl"
+PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
+ASSUME_PROVIDED += "libsdl-native"
+CONF_VERSION = "1"
+
+BB_NUMBER_THREADS = '8'
+PARALLEL_MAKE = '-j 4'
+
+DL_DIR ?= "${BSPDIR}/downloads/"
+ACCEPT_FSL_EULA = "1"
+YOCTO_BASE_PATH = "/data2/yocto"
+DL_DIR = "${YOCTO_BASE_PATH}/yocto-input/downloads"
+SSTATE_DIR = "${YOCTO_BASE_PATH}/yocto-output/${MACHINE}/sstate-cache"
+TMPDIR = "${YOCTO_BASE_PATH}/yocto-output/${MACHINE}/tmp"
+
+PACKAGE_CLASSES = "package_ipk"
