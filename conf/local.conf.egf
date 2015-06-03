@@ -1,6 +1,6 @@
 #ATTENZIONE!! OGNI VOLTA CHE SI MODIFICA QUESTO FILE
 #RICORDARSI DI TENERE AGGIORNATA LA SUA COPIA IN meta-egf/conf/local.conf.egf
-MACHINE ??= '0457evbimx6q'
+MACHINE ??= '0508faeimx6dl'
 DISTRO ?= 'pokyegf'
 EXTRA_IMAGE_FEATURES = "debug-tweaks"
 USER_CLASSES ?= "buildstats image-mklibs"
@@ -18,7 +18,7 @@ ASSUME_PROVIDED += "libsdl-native"
 CONF_VERSION = "1"
 
 BB_NUMBER_THREADS = '8'
-PARALLEL_MAKE = '-j 4'
+PARALLEL_MAKE = '-j 8'
 
 DL_DIR ?= "${BSPDIR}/downloads/"
 ACCEPT_FSL_EULA = "1"
@@ -28,3 +28,5 @@ SSTATE_DIR = "${YOCTO_BASE_PATH}/yocto-output/${MACHINE}/sstate-cache"
 TMPDIR = "${YOCTO_BASE_PATH}/yocto-output/${MACHINE}/tmp"
 
 PACKAGE_CLASSES = "package_ipk"
+INHERIT += "rm_work"
+DISTRO_FEATURES_remove = " 3g bluetooth irda nfc wifi bluetooth pcmcia pci nfs alsa pulseaudio"
