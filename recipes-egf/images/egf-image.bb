@@ -13,6 +13,7 @@ inherit core-image
 CORE_IMAGE_EXTRA_INSTALL += " \
     opkg-utils opkg canutils\
     iproute2 openssh openssh-sftp-server nano strace i2c-tools gdb xserver-xorg-extension-viv-hdmi \
+    itema-bundle \
 "
 
 
