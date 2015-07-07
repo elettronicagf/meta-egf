@@ -1,7 +1,5 @@
 DESCRIPTION = "Immagine per Applicazione JAVA Telaio ITEMA. Modulo 0508"
 
-IMAGE_FEATURES += " splash"
-
 IMAGE_FEATURES += "\
     ${@base_contains('DISTRO_FEATURES', 'x11', 'package-management x11-base x11-sato read-only-rootfs', '', d)} \
 "
@@ -13,15 +11,11 @@ inherit core-image
 CORE_IMAGE_EXTRA_INSTALL += " \
     opkg-utils opkg canutils\
     iproute2 openssh openssh-sftp-server nano strace i2c-tools gdb xserver-xorg-extension-viv-hdmi \
-    itema-bundle \
+    util-linux itema-bundle xf86-input-tslib \
+    tslib tslib-calibrate tslib-conf tslib-tests \
 "
 
-
- 
-
-
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-
 
 # Add in Graphics
 X11_IMAGE_INSTALL_GRAPHICS = "${@base_contains('DISTRO_FEATURES', 'x11', \
@@ -33,8 +27,16 @@ X11_IMAGE_INSTALL_GRAPHICS = "${@base_contains('DISTRO_FEATURES', 'x11', \
 IMAGE_INSTALL += " \
     ${X11_IMAGE_INSTALL_GRAPHICS} \
     "
-IMAGE_INSTALL_remove += "packagegroup-fsl-bluez5-tools"
-IMAGE_INSTALL_remove += "packagegroup-fsl-tools-gpu"
+IMAGE_INSTALL_remove += "packagegroup-fsl-bluez5-tools \
+                         packagegroup-fsl-tools-gpu "
+
+fix_readonly_image() {
+		rm ${IMAGE_ROOTFS}/etc/network/interfaces
+		ln -s /home/root/etc/network/interfaces ${IMAGE_ROOTFS}/etc/network/interfaces
+}
+
+#IMAGE_PREPROCESS_COMMAND += "fix_readonly_image"
+
 export IMAGE_BASENAME = "egf-image"
 
 
