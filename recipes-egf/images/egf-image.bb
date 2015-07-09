@@ -9,12 +9,12 @@ LICENSE = "MIT"
 inherit core-image
 
 CORE_IMAGE_EXTRA_INSTALL += " \
-    opkg-utils opkg canutils\
+    opkg-utils opkg canutils \
     iproute2 openssh openssh-sftp-server nano strace i2c-tools gdb xserver-xorg-extension-viv-hdmi \
-    util-linux itema-bundle xf86-input-tslib \
-    tslib tslib-calibrate tslib-conf tslib-tests \
-"
+    util-linux itema-bundle "
 
+
+# "xf86-input-tslib tslib tslib-calibrate tslib-conf tslib-tests"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 # Add in Graphics
@@ -35,7 +35,20 @@ fix_readonly_image() {
 		ln -s /home/root/etc/network/interfaces ${IMAGE_ROOTFS}/etc/network/interfaces
 }
 
+fix_image() {
+		#rimozione ts calibration
+		#rm ${IMAGE_ROOTFS}/etc/X11/Xinit.d/89xTs_Calibrate
+		
+		#rimozione calibrazione automatica all'avvio
+		#rm ${IMAGE_ROOTFS}/etc/xdg/autostart/xinput_calibrator.desktop
+
+		#attesa avvio applicativo		
+		sed -i -e '1isleep 30\' ${IMAGE_ROOTFS}/etc/X11/Xsession.d/90xXWindowManager.sh
+}
+
+
 #IMAGE_PREPROCESS_COMMAND += "fix_readonly_image"
+IMAGE_PREPROCESS_COMMAND += "fix_image"
 
 export IMAGE_BASENAME = "egf-image"
 
