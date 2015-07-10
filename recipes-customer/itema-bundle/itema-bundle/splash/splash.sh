@@ -4,10 +4,11 @@ case $1 in
         ;;
 
         stop)
+        fbset -depth 24
+        sleep 1
         logo=logo-itema.bgr.gz
         ;;
 esac
 
-fbset -depth 24
-zcat /usr/share/itema/$logo > /dev/fb0
+zcat /usr/share/itema/$logo /usr/share/itema/$logo /usr/share/itema/$logo > /dev/fb0
 

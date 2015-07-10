@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=Itema P7300
 Comment=Itema P7300 Terminal
-Exec=/home/root/terminal/app_linux/run.sh
+Exec=/home/root/terminal/app_linux/run3.sh
 Icon=computer
 Terminal=false
 Type=Application
