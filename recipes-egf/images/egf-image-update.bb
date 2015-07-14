@@ -1,22 +1,16 @@
-
 LICENSE = "MIT"
-#IMAGE_INSTALL = "initramfs-live-boot  busybox udev base-passwd"
-PACKAGE_INSTALL = "initramfs-boot   busybox udev base-passwd udev-extraconf dosfstools e2fsprogs"
-#initramfs-live-install initramfs-live-install-efi
-#IMAGE_FEATURES += "splash  "
+PACKAGE_INSTALL = "initramfs-boot   busybox udev base-passwd udev-extraconf dosfstools e2fsprogs mtd-utils"
 
 export IMAGE_BASENAME = "core-image-minimal-initramfs"
 IMAGE_LINGUAS = ""
 
 
 IMAGE_FSTYPES = "${INITRAMFS_FSTYPES}"
-#USE_DEVFS = "1"
 inherit core-image
 
 IMAGE_ROOTFS_SIZE = "8192"
 
 #tslib tslib-calibrate tslib-conf tslib-tests 
-#IMAGE_INSTALL += " i2c-tools nano strace openssh openssh-sftp-server unzip util-linux"
 IMAGE_INSTALL_remove += "packagegroup-fsl-bluez5-tools"
 IMAGE_INSTALL_remove += "packagegroup-fsl-tools-gpu"
 

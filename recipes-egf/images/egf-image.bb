@@ -9,7 +9,7 @@ LICENSE = "MIT"
 inherit core-image
 
 CORE_IMAGE_EXTRA_INSTALL += " \
-    opkg-utils opkg canutils \
+    opkg-utils opkg canutils mtd-utils \
     iproute2 openssh openssh-sftp-server nano strace i2c-tools gdb xserver-xorg-extension-viv-hdmi \
     util-linux itema-bundle "
 
@@ -36,6 +36,9 @@ fix_readonly_image() {
 }
 
 fix_image() {
+
+		echo ${GF_YOCTO_ROOTFS_VERSION} > ${IMAGE_ROOTFS}/etc/version.gf
+
 		#rimozione ts calibration
 		#rm ${IMAGE_ROOTFS}/etc/X11/Xinit.d/89xTs_Calibrate
 		
