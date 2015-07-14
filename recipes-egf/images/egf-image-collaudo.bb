@@ -11,10 +11,10 @@ LICENSE = "MIT"
 inherit core-image
 
 CORE_IMAGE_EXTRA_INSTALL += " \
-    opkg-utils opkg canutils python-pyserial \
+    opkg-utils opkg canutils python-pyserial mtd-utils \
     iproute2 openssh openssh-sftp-server nano strace i2c-tools gdb xserver-xorg-extension-viv-hdmi \
     util-linux dosfstools e2fsprogs xf86-input-tslib \
-    tslib tslib-calibrate tslib-conf tslib-tests \
+    tslib tslib-calibrate tslib-conf tslib-tests python-pygtk python-threading procps \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
