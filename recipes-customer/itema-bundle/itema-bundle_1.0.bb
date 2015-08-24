@@ -14,7 +14,8 @@ SRC_URI = "file://java8u33.tar.bz2 \
                 file://autostart-itema.desktop \
                 file://splash/splash.sh \
                 file://splash/logo-itema-loading.bgr.g \
-                file://splash/logo-itema.bgr.g "
+                file://splash/logo-itema.bgr.g \
+                file://touchcalibrate.sh "
 
 FILES_${PN} += "${datadir}/itema /opt/java8u33"
 
@@ -51,4 +52,7 @@ do_install_append () {
         install -d ${D}/usr/share/itema
         install ${WORKDIR}/splash/logo-itema.bgr.g				${D}/usr/share/itema/logo-itema.bgr.gz
         install ${WORKDIR}/splash/logo-itema-loading.bgr.g		${D}/usr/share/itema/logo-itema-loading.bgr.gz
+        
+        install -d ${D}/usr/bin
+        install ${WORKDIR}/touchcalibrate.sh					${D}/usr/bin/
 }
