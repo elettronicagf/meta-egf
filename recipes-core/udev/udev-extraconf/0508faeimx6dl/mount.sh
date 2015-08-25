@@ -33,7 +33,7 @@ automount() {
 	# grant it with  w/r/x permissions.
 	case $ID_FS_TYPE in
 	vfat|fat)
-		MOUNT="$MOUNT -o umask=007,gid=`awk -F':' '/^disk/{print $3}' /etc/group`"
+		MOUNT="$MOUNT -o umask=007,sync,gid=`awk -F':' '/^disk/{print $3}' /etc/group`"
 		;;
 	# TODO
 	*)
@@ -89,5 +89,6 @@ if [ "$ACTION" = "remove" ] || [ "$ACTION" = "change" ] && [ -x "$UMOUNT" ] && [
 	
 	# Remove empty directories from auto-mounter
 	name="`basename "$DEVNAME"`"
+	[ $name = "sda" ] && name="sda1"
 	test -e "/tmp/.automount-$name" && rm_dir "/run/media/$name"
 fi
