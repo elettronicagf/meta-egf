@@ -30,4 +30,4 @@ TMPDIR = "${YOCTO_BASE_PATH}/yocto-output/${MACHINE}/tmp"
 PACKAGE_CLASSES = "package_ipk"
 
 INHERIT += "rm_work"
-DISTRO_FEATURES_remove = " 3g bluetooth irda nfc bluetooth pcmcia pci nfs alsa pulseaudio"
+DISTRO_FEATURES_remove = " 3g bluetooth irda nfc pcmcia pci nfs alsa pulseaudio"
