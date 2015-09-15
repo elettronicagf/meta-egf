@@ -2,7 +2,7 @@ DESCRIPTION = "A sample image that includes gstreamer packages and \
 Freescale's multimedia packages (VPU and GPU) and QT5 libraries."
 
 IMAGE_FEATURES += "\
-    ${@base_contains('DISTRO_FEATURES', 'x11', 'package-management x11-base x11-sato read-only-rootfs', '', d)} \
+    ${@base_contains('DISTRO_FEATURES', 'x11', 'x11-base x11-sato', '', d)} \
 "
 
 LICENSE = "MIT"
@@ -11,11 +11,17 @@ inherit core-image
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
+IMAGE_FEATURES += "\
+	package-management \
+	read-only-rootfs \
+"
+
 CORE_IMAGE_EXTRA_INSTALL += " \
-    opkg-utils opkg hostapd mc hostap-conf canutils\
-    openssh openssh-sftp-server nano strace i2c-tools gdb \
+    opkg-utils opkg hostapd mc hostap-conf canutils mtd-utils \
+    openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver\
     packagegroup-fsl-gstreamer \
     packagegroup-fsl-tools-gpu \
+    libusb-compat imx-test \
 "
 
 QT5_IMAGE_INSTALL = ""
