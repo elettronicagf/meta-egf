@@ -1,0 +1,2 @@
+mount -n -o remount,ro /home/root
+
