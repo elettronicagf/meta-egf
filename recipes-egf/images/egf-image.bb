@@ -47,3 +47,18 @@ IMAGE_INSTALL += " \
 "
 
 MACHINE_FEATURES += " wifi "
+fix_image() {
+
+		echo ${GF_YOCTO_ROOTFS_VERSION} > ${IMAGE_ROOTFS}/etc/version.gf
+# il link andrebbe fatto dentro a egf-wireless. Questo pero' non 
+# e' stato possibile perche' il pacchetto linux_firmware fornisce
+# gia' i firmware ti e questo causerebbe un conflitto
+# quindi bypassiamo i controllo facendo il link a valle di tutto		
+		ln -s /home/root/firmware/ti-connectivity ${IMAGE_ROOTFS}/lib/firmware/ti-connectivity
+
+		rm -rf ${IMAGE_ROOTFS}/lib/modules/
+		rm -rf ${IMAGE_ROOTFS}/boot/*
+}
+
+
+IMAGE_PREPROCESS_COMMAND += "fix_image"
