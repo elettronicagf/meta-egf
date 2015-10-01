@@ -1,0 +1,13 @@
+diff --git a/xserver-nodm b/xserver-nodm
+index d2e2f86..b80eea2 100755
+--- a/xserver-nodm
++++ b/xserver-nodm
+@@ -28,7 +28,7 @@ case "$1" in
+ 
+        echo "Starting Xserver"
+        . /etc/X11/xserver-common
+-       xinit /etc/X11/Xsession -- `which $XSERVER` $ARGS >/var/log/Xsession.log 2>&1
++       xinit /etc/X11/Xsession -- `which $XSERVER` $ARGS -nocursor >/var/log/Xsession.log 2>&1
+     fi 
+   ;;
+ 
