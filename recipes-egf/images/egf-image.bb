@@ -17,18 +17,18 @@ IMAGE_FEATURES += "\
 "
 
 CORE_IMAGE_EXTRA_INSTALL += " \
-    opkg-utils opkg mc mtd-utils minicom \
+    opkg-utils minicom opkg mc mtd-utils minicom bluez5 egf-wireless egf-gpio \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
     packagegroup-fsl-gstreamer \
     packagegroup-fsl-tools-gpu \
-    libusb-compat imx-test \
+    libusb-compat \
 "
 
 QT5_IMAGE_INSTALL = ""
 QT5_IMAGE_INSTALL_common = " \
     packagegroup-qt5-core \
     packagegroup-qt5-qtdeclarative \
-    packagegroup-qt5-qtdeclarative-qml \
+    packagegroup-qt5-qtdeclarative-qml \ 
 "
 
 QT5_IMAGE_INSTALL_mx6 = " \
