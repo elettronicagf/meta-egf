@@ -1,6 +1,6 @@
 #ATTENZIONE!! OGNI VOLTA CHE SI MODIFICA QUESTO FILE
 #RICORDARSI DI TENERE AGGIORNATA LA SUA COPIA IN meta-egf/conf/local.conf.egf
-MACHINE ??= '0511socioimx6dl'
+MACHINE ??= '0511socioimx6qdl'
 DISTRO ?= 'pokyegf'
 EXTRA_IMAGE_FEATURES = "debug-tweaks"
 USER_CLASSES ?= "buildstats image-mklibs"
@@ -21,7 +21,7 @@ BB_NUMBER_THREADS = '8'
 PARALLEL_MAKE = '-j 4'
 
 DL_DIR ?= "${BSPDIR}/downloads/"
-ACCEPT_FSL_EULA = "1"
+ACCEPT_FSL_EULA = ""
 YOCTO_BASE_PATH = "/data2/yocto"
 DL_DIR = "${YOCTO_BASE_PATH}/yocto-input/downloads"
 SSTATE_DIR = "${YOCTO_BASE_PATH}/yocto-output/${MACHINE}/sstate-cache"
@@ -29,5 +29,6 @@ TMPDIR = "${YOCTO_BASE_PATH}/yocto-output/${MACHINE}/tmp"
 
 PACKAGE_CLASSES = "package_ipk"
 
-INHERIT += "rm_work"
+#INHERIT += "rm_work"
 DISTRO_FEATURES_remove = " 3g bluetooth irda nfc pcmcia pci nfs alsa pulseaudio"
+
