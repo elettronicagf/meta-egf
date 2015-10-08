@@ -24,6 +24,10 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     libusb-compat \
 "
 
+QT4_IMAGE_INSTALL = " \
+	qt4-x11-free \
+"
+
 QT5_IMAGE_INSTALL = ""
 QT5_IMAGE_INSTALL_common = " \
     packagegroup-qt5-core \
@@ -44,6 +48,7 @@ X11_IMAGE_INSTALL_GRAPHICS = "${@base_contains('DISTRO_FEATURES', 'x11', \
 IMAGE_INSTALL += " \
     ${X11_IMAGE_INSTALL_GRAPHICS} \
     ${QT5_IMAGE_INSTALL} \
+    ${QT4_IMAGE_INSTALL} \
 "
 
 MACHINE_FEATURES += " wifi "
@@ -58,6 +63,11 @@ fix_image() {
 
 		rm -rf ${IMAGE_ROOTFS}/lib/modules/
 		rm -rf ${IMAGE_ROOTFS}/boot/*
+		
+		rm -rf ${IMAGE_ROOTFS}/usr/bin/qt4/examples
+		rm -rf ${IMAGE_ROOTFS}/usr/bin/qt4/demos
+		rm -rf ${IMAGE_ROOTFS}/usr/share/qt4/mkspecs
+		rm -rf ${IMAGE_ROOTFS}/usr/share/doc/qt4
 }
 
 
