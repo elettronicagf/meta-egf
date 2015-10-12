@@ -1,7 +1,7 @@
 LICENSE = "MIT"
-PACKAGE_INSTALL = "initramfs-boot busybox udev base-passwd udev-extraconf dosfstools e2fsprogs mtd-utils"
+PACKAGE_INSTALL = "initramfs-boot busybox udev base-passwd udev-extraconf dosfstools e2fsprogs "
 
-export IMAGE_BASENAME = "core-image-minimal-initramfs"
+export IMAGE_BASENAME = "egf-image-update"
 IMAGE_LINGUAS = ""
 
 
@@ -12,6 +12,8 @@ IMAGE_ROOTFS_SIZE = "8192"
 
 IMAGE_INSTALL_remove += "packagegroup-fsl-bluez5-tools"
 IMAGE_INSTALL_remove += "packagegroup-fsl-tools-gpu"
+
+PACKAGE_INSTALL += " mtd-utils unzip "
 
 write_version () {
 #scrittura versione su filesystem
