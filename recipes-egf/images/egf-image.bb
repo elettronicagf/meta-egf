@@ -16,8 +16,8 @@ IMAGE_FEATURES += "\
 	read-only-rootfs \
 "
 
-CORE_IMAGE_EXTRA_INSTALL += " \
-    opkg-utils minicom opkg mc mtd-utils minicom bluez5 egf-wireless egf-gpio \
+IMAGE_INSTALL += " \
+    opkg-utils minicom opkg mc mtd-utils mtd-utils-ubifs bluez5 egf-wireless egf-gpio \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
     packagegroup-fsl-gstreamer \
     packagegroup-fsl-tools-gpu \
