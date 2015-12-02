@@ -15,9 +15,10 @@ SRC_URI = "file://java8u33.tar.bz2 \
                 file://splash/splash.sh \
                 file://splash/logo-itema-loading.bgr.g \
                 file://splash/logo-itema.bgr.g \
-                file://touchcalibrate.sh "
-
-FILES_${PN} += "${datadir}/itema /opt/java8u33"
+                file://touchcalibrate.sh \
+                file://fonts.tar.gz"
+                
+FILES_${PN} += "${datadir}/itema /opt/java8u33 /usr/share/fonts/ttf"
 
 DEPENDS = "libx11"
 
