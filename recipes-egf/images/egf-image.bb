@@ -2,7 +2,7 @@ DESCRIPTION = "A sample image that includes gstreamer packages and \
 Freescale's multimedia packages (VPU and GPU) and QT5 libraries."
 
 IMAGE_FEATURES += "\
-    ${@base_contains('DISTRO_FEATURES', 'x11', 'x11-base x11-sato', '', d)} \
+    ${@base_contains('DISTRO_FEATURES', 'x11', 'x11-base ', '', d)} \
 "
 
 LICENSE = "MIT"
@@ -17,27 +17,14 @@ IMAGE_FEATURES += "\
 "
 
 CORE_IMAGE_EXTRA_INSTALL += " \
-    opkg-utils minicom opkg mc mtd-utils minicom bluez5 egf-wireless egf-gpio \
+    opkg-utils minicom opkg mc mtd-utils minicom egf-gpio iproute2 \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
     packagegroup-fsl-gstreamer \
     packagegroup-fsl-tools-gpu \
-    libusb-compat \
 "
 
 QT4_IMAGE_INSTALL = " \
 	qt4-x11-free \
-"
-
-QT5_IMAGE_INSTALL = ""
-QT5_IMAGE_INSTALL_common = " \
-    packagegroup-qt5-core \
-    packagegroup-qt5-qtdeclarative \
-    packagegroup-qt5-qtdeclarative-qml \ 
-"
-
-QT5_IMAGE_INSTALL_mx6 = " \
-    ${QT5_IMAGE_INSTALL_common} \
-    packagegroup-qt5-webkit \
 "
 
 X11_IMAGE_INSTALL_GRAPHICS = "${@base_contains('DISTRO_FEATURES', 'x11', \
@@ -47,19 +34,12 @@ X11_IMAGE_INSTALL_GRAPHICS = "${@base_contains('DISTRO_FEATURES', 'x11', \
     
 IMAGE_INSTALL += " \
     ${X11_IMAGE_INSTALL_GRAPHICS} \
-    ${QT5_IMAGE_INSTALL} \
     ${QT4_IMAGE_INSTALL} \
 "
 
-MACHINE_FEATURES += " wifi "
 fix_image() {
 
 		echo ${GF_YOCTO_ROOTFS_VERSION} > ${IMAGE_ROOTFS}/etc/version.gf
-# il link andrebbe fatto dentro a egf-wireless. Questo pero' non 
-# e' stato possibile perche' il pacchetto linux_firmware fornisce
-# gia' i firmware ti e questo causerebbe un conflitto
-# quindi bypassiamo i controllo facendo il link a valle di tutto		
-		ln -s /home/root/firmware/ti-connectivity ${IMAGE_ROOTFS}/lib/firmware/ti-connectivity
 
 		rm -rf ${IMAGE_ROOTFS}/lib/modules/
 		rm -rf ${IMAGE_ROOTFS}/boot/*
