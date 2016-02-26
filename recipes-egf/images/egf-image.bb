@@ -19,7 +19,7 @@ IMAGE_FEATURES += "\
 CORE_IMAGE_EXTRA_INSTALL += " \
     opkg-utils minicom opkg mc mtd-utils minicom egf-gpio iproute2 \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
-    packagegroup-fsl-gstreamer \
+    packagegroup-fsl-gstreamer util-linux canutils x11vnc icu \
     packagegroup-fsl-tools-gpu \
 "
 
