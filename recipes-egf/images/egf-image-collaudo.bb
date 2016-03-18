@@ -66,11 +66,16 @@ create_pointercal_for_blc1089 () {
 }
 
 fix_image () {
-	rm ${IMAGE_ROOTFS}/etc/init.d/connman
 	sed -i '/rc_mxc.S/d' ${IMAGE_ROOTFS}/etc/inittab
 	
 }
 
+write_version () {
+#scrittura versione su filesystem
+	echo ${GF_YOCTO_ROOTFS_COLLAUDO_VERSION} > ${IMAGE_ROOTFS}/etc/version.gf
+}
+
 IMAGE_PREPROCESS_COMMAND += "fix_image;"
+IMAGE_PREPROCESS_COMMAND += "write_version;"
 IMAGE_PREPROCESS_COMMAND += "overwrite_interfaces;"
 IMAGE_PREPROCESS_COMMAND += "create_pointercal_for_blc1089"
