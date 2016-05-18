@@ -16,7 +16,13 @@ SRC_URI = "file://java8u33.tar.bz2 \
                 file://splash/logo-itema-loading.bgr.g \
                 file://splash/logo-itema.bgr.g \
                 file://touchcalibrate.sh \
-                file://fonts.tar.gz"
+                file://fonts.tar.gz \
+                file://ccrypt/ccat \
+                file://ccrypt/ccdecrypt \
+                file://ccrypt/ccrypt \
+                file://ccrypt/ccguess \
+                file://ccrypt/ccencrypt \
+                "
                 
 FILES_${PN} += "${datadir}/itema /opt/java8u33 /usr/share/fonts/ttf"
 
@@ -40,6 +46,12 @@ do_install_append () {
         install -m 0755    ${WORKDIR}/rmro              ${D}${bindir}
         install -m 0755    ${WORKDIR}/rmrwdata          ${D}${bindir}
         install -m 0755    ${WORKDIR}/rmrodata          ${D}${bindir}
+        
+        install -m 0755    ${WORKDIR}/ccrypt/ccat       ${D}${bindir}
+        install -m 0755    ${WORKDIR}/ccrypt/ccdecrypt  ${D}${bindir}
+        install -m 0755    ${WORKDIR}/ccrypt/ccrypt     ${D}${bindir}
+        install -m 0755    ${WORKDIR}/ccrypt/ccguess    ${D}${bindir}
+        install -m 0755    ${WORKDIR}/ccrypt/ccencrypt  ${D}${bindir}
         
         install -d ${D}/usr/share/applications
         install ${WORKDIR}/itema.desktop                ${D}/usr/share/applications/
