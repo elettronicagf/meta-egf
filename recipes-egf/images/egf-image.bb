@@ -11,7 +11,7 @@ inherit core-image
 CORE_IMAGE_EXTRA_INSTALL += " \
     opkg-utils opkg canutils mtd-utils \
     iproute2 openssh openssh-sftp-server nano strace i2c-tools gdb xserver-xorg-extension-viv-hdmi \
-    util-linux itema-bundle "
+    util-linux itema-bundle zip unzip"
 
 
 # "xf86-input-tslib tslib tslib-calibrate tslib-conf tslib-tests"
