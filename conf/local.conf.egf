@@ -1,6 +1,6 @@
 #ATTENZIONE!! OGNI VOLTA CHE SI MODIFICA QUESTO FILE
 #RICORDARSI DI TENERE AGGIORNATA LA SUA COPIA IN meta-egf/conf/local.conf.egf
-MACHINE ??= '0511socioimx6qdl'
+MACHINE ??= '0541evbimx6qdl'
 DISTRO ?= 'pokyegf'
 EXTRA_IMAGE_FEATURES = "debug-tweaks"
 USER_CLASSES ?= "buildstats image-mklibs"

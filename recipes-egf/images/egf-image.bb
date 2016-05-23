@@ -21,7 +21,6 @@ IMAGE_INSTALL += " \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
     packagegroup-fsl-gstreamer \
     packagegroup-fsl-tools-gpu \
-    libusb-compat \
 "
 
 QT4_IMAGE_INSTALL = " \
