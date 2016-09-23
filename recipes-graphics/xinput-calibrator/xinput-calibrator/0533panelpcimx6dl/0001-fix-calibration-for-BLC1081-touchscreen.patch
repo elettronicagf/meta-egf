@@ -1,0 +1,40 @@
+From d825f48d1bd7b755542961903456994112dcfaf5 Mon Sep 17 00:00:00 2001
+From: yocto <yocto@androidbuilder>
+Date: Fri, 23 Sep 2016 11:03:48 +0200
+Subject: [PATCH] fix calibration for BLC1081 touchscreen
+
+---
+ scripts/xinput_calibrator_pointercal.sh | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/scripts/xinput_calibrator_pointercal.sh b/scripts/xinput_calibrator_pointercal.sh
+index 0ada7da..21f1fc1 100755
+--- a/scripts/xinput_calibrator_pointercal.sh
++++ b/scripts/xinput_calibrator_pointercal.sh
+@@ -14,6 +14,8 @@ BINARY="xinput_calibrator"
+ SYS_CALFILE="/etc/pointercal.xinput"
+ USER_CALFILE="$HOME/.pointercal/pointercal.xinput"
+ 
++/usr/bin/rmrw
++
+ if [ "$USER" = "root" ]; then
+   LOGFILE="/var/log/xinput_calibrator.pointercal.log"
+   CALFILES="$SYS_CALFILE"
+@@ -37,8 +39,14 @@ done
+ 
+ [ "$USER" != "root" ] && CALFILE=$USER_CALFILE
+ 
++if [ "$TOUCHSCREEN_MODEL" = "EGF_BLC1081" ]; then
++  xinput set-int-prop "AR1020 Touchscreen" "Evdev Axes Swap" 8 1
++fi
++
+ CALDATA=`$BINARY --output-type xinput -v | tee $LOGFILE | grep '    xinput set' | sed 's/^    //g; s/$/;/g'`
+ if [ ! -z "$CALDATA" ] ; then
+   echo $CALDATA > $CALFILE
+   echo "Calibration data stored in $CALFILE (log in $LOGFILE)"
+ fi
++
++/usr/bin/rmro
+-- 
+2.7.4
+

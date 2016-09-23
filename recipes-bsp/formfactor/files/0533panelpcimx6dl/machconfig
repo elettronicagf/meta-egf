@@ -1,0 +1,10 @@
+export TOUCHSCREEN_MODEL=
+
+for w in $(cat /proc/cmdline)
+do
+  [[ $w == panel* ]] && export TOUCHSCREEN_MODEL=$(echo $w | cut -d'=' -f2)
+done
+
+if [ "$TOUCHSCREEN_MODEL" = "EGF_BLC1081" ]; then
+  export HAVE_TOUCHSCREEN=1
+fi
