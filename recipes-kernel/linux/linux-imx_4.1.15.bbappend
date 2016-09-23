@@ -1,5 +1,5 @@
 SRCBRANCH = "0533_panel_pc"
-SRCREV = "78a6d66d4236f5b5738d2e8d1f5ee860fe29e7dd"
+SRCREV = "e638c53caf0116e8dee38b13e1c4ead5783e0814"
 
 KERNEL_SRC = "git://androidbuilder/imx53/kernel.git;protocol=ssh;user=git"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
