@@ -1,4 +1,4 @@
-cp scripts/egf-setup-release.sh ../
+cp scripts/egf-setup-release.sh ../../
 cd ../poky
 git am ../meta-egf/patch/0001-fix-udev-conflict.patch
 
