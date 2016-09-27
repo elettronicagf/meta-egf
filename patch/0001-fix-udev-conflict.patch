@@ -1,0 +1,57 @@
+From c71898abf633e4da1f7d8350a851f89be0d2b0d5 Mon Sep 17 00:00:00 2001
+From: yocto <yocto@androidbuilder>
+Date: Thu, 25 Aug 2016 16:44:05 +0200
+Subject: [PATCH] fix udev conflict, the same files are installed by two recipes
+
+-this issue is present only selecting ipk as package manager
+---
+ meta/recipes-core/udev/udev.inc | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/meta/recipes-core/udev/udev.inc b/meta/recipes-core/udev/udev.inc
+index c378ae3..b1b812a 100644
+--- a/meta/recipes-core/udev/udev.inc
++++ b/meta/recipes-core/udev/udev.inc
+@@ -25,14 +25,14 @@ SRC_URI = "${KERNELORG_MIRROR}/linux/utils/kernel/hotplug/udev-${PV}.tar.gz \
+            file://devfs-udev.rules \
+            file://links.conf \
+            file://permissions.rules \
+-           file://local.rules \
+-           file://udev-cache \
+            file://udev-cache.default \
+            file://add-install-ptest.patch \
+            file://fix_rule-syntax-regex-ptest.patch \
+            file://run-ptest \
+            file://init"
+ 
++
++
+ inherit autotools pkgconfig update-rc.d ptest
+ RDEPENDS_${PN}-ptest += "make perl python"
+ 
+@@ -84,19 +84,17 @@ FILES_udev-cache = "${sysconfdir}/init.d/udev-cache ${sysconfdir}/default/udev-c
+ do_install_append () {
+ 	install -d ${D}${sysconfdir}/init.d
+ 	install -m 0755 ${WORKDIR}/init ${D}${sysconfdir}/init.d/udev
+-	install -m 0755 ${WORKDIR}/udev-cache ${D}${sysconfdir}/init.d/udev-cache
++	#install -m 0755 ${WORKDIR}/udev-cache ${D}${sysconfdir}/init.d/udev-cache
+ 	sed -i s%@UDEVD@%${nonarch_base_libdir}/udev/udevd% ${D}${sysconfdir}/init.d/udev
+-	sed -i s%@UDEVD@%${nonarch_base_libdir}/udev/udevd% ${D}${sysconfdir}/init.d/udev-cache
++	#sed -i s%@UDEVD@%${nonarch_base_libdir}/udev/udevd% ${D}${sysconfdir}/init.d/udev-cache
+ 
+ 	install -d ${D}${sysconfdir}/default
+-	install -m 0755 ${WORKDIR}/udev-cache.default ${D}${sysconfdir}/default/udev-cache
++	#install -m 0755 ${WORKDIR}/udev-cache.default ${D}${sysconfdir}/default/udev-cache
+ 
+ 	touch ${D}${sysconfdir}/udev/cache.data
+ 
+ 	install -d ${D}${sysconfdir}/udev/rules.d/
+ 
+-	install -m 0644 ${WORKDIR}/local.rules         ${D}${sysconfdir}/udev/rules.d/local.rules
+-
+ 	# hid2hci has moved to bluez4. removed in udev as of version 169
+ 	rm -f ${D}${base_libdir}/udev/hid2hci
+ 
+-- 
+2.7.4
+
