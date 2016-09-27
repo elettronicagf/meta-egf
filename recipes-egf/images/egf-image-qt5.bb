@@ -16,7 +16,7 @@ IMAGE_FEATURES += "\
 "
 
 IMAGE_INSTALL += " \
-    opkg-utils minicom opkg mc egf-wireless egf-gpio \
+    opkg-utils minicom opkg mc egf-wireless egf-gpio egf-theme \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
 "
 
@@ -94,10 +94,7 @@ fix_image() {
 		rm -rf ${IMAGE_ROOTFS}/lib/modules/
 		rm -rf ${IMAGE_ROOTFS}/boot/*
 		
-		rm -rf ${IMAGE_ROOTFS}/usr/bin/qt4/examples
-		rm -rf ${IMAGE_ROOTFS}/usr/bin/qt4/demos
-		rm -rf ${IMAGE_ROOTFS}/usr/share/qt4/mkspecs
-		rm -rf ${IMAGE_ROOTFS}/usr/share/doc/qt4
+		mv ${IMAGE_ROOTFS}/usr/share/pixmaps/matchbox-keyboard-new.png ${IMAGE_ROOTFS}/usr/share/pixmaps/matchbox-keyboard.png				
 }
 
 
