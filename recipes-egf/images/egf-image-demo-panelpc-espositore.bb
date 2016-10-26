@@ -5,6 +5,8 @@ LICENSE = "MIT"
 
 inherit core-image
 
+export IMAGE_BASENAME = "egf-image-demo-panelpc-espositore"
+
 IMAGE_FEATURES += "${@base_contains('DISTRO_FEATURES', 'x11', \
                             ' x11-base x11-sato hwcodecs', '', d)}"
 
@@ -16,9 +18,8 @@ IMAGE_FEATURES += "\
 "
 
 IMAGE_INSTALL += " \
-    opkg-utils minicom opkg mc egf-wireless egf-theme egf-gpio python-pyqt \
-    openssh openssh-sftp-server gstreamer1.0-plugins-bad-opencv nano strace i2c-tools gdb gdbserver \
-"
+    opkg-utils minicom opkg mc egf-theme egf-gpio python-pyqt \
+    openssh openssh-sftp-server gstreamer1.0-plugins-bad-opencv nano strace i2c-tools gdb gdbserver "
 
 CONFLICT_DISTRO_FEATURES = "directfb"
 
@@ -63,6 +64,9 @@ MM_IMAGE_INSTALL_mx7 = "packagegroup-fsl-multimedia-gstreamer1.0-core"
 #    ${QT5_IMAGE_INSTALL} 
 #    ${QT4_IMAGE_INSTALL} 
 #"
+
+GF_YOCTO_ROOTFS_VERSION = "1.0"
+
 IMAGE_INSTALL += " \
     ${X11_IMAGE_INSTALL} \
     ${X11_IMAGE_INSTALL_GRAPHICS} \
@@ -74,24 +78,27 @@ IMAGE_INSTALL += " \
 #MACHINE_FEATURES += " wifi "
 fix_image() {
 
-		echo ${GF_YOCTO_ROOTFS_VERSION} > ${IMAGE_ROOTFS}/etc/version.gf
-# il link andrebbe fatto dentro a egf-wireless. Questo pero' non 
-# e' stato possibile perche' il pacchetto linux_firmware fornisce
-# gia' i firmware ti e questo causerebbe un conflitto
-# quindi bypassiamo i controllo facendo il link a valle di tutto		
-		ln -s /home/root/firmware/ti-connectivity ${IMAGE_ROOTFS}/lib/firmware/ti-connectivity
-
-		rm -rf ${IMAGE_ROOTFS}/lib/modules/
+		echo ${GF_YOCTO_ROOTFS_VERSION} >> ${IMAGE_ROOTFS}/etc/version.gf
+		echo ${IMAGE_BASENAME} >> ${IMAGE_ROOTFS}/etc/version.gf	
+	
 		rm -rf ${IMAGE_ROOTFS}/boot/*
-
+		rm -rf ${IMAGE_ROOTFS}/lib/modules
 		mv ${IMAGE_ROOTFS}/usr/share/pixmaps/matchbox-keyboard-new.png ${IMAGE_ROOTFS}/usr/share/pixmaps/matchbox-keyboard.png		
 		rm -rf ${IMAGE_ROOTFS}/usr/bin/qt4/examples
 		rm -rf ${IMAGE_ROOTFS}/usr/bin/qt4/demos
 		rm -rf ${IMAGE_ROOTFS}/usr/share/qt4/mkspecs
 		rm -rf ${IMAGE_ROOTFS}/usr/share/doc/qt4
+		sed -i -e 's/Sato/GF/g' ${IMAGE_ROOTFS}/etc/matchbox/session
+		sed -i -e 's/Sato/GF/g' ${IMAGE_ROOTFS}/etc/gconf/gconf.xml.defaults/desktop/poky/interface/%gconf.xml
+		#Change Default matchbox tab order
+		rm ${IMAGE_ROOTFS}/usr/share/matchbox/vfolders/Root.order
+		echo "All" >> ${IMAGE_ROOTFS}/usr/share/matchbox/vfolders/Root.order
+		echo "Applications" >> ${IMAGE_ROOTFS}/usr/share/matchbox/vfolders/Root.order
+		echo "Utilities" >> ${IMAGE_ROOTFS}/usr/share/matchbox/vfolders/Root.order
+		echo "Games" >> ${IMAGE_ROOTFS}/usr/share/matchbox/vfolders/Root.order
+		echo "Settings" >> ${IMAGE_ROOTFS}/usr/share/matchbox/vfolders/Root.order
 }
 
 
 IMAGE_PREPROCESS_COMMAND += "fix_image"
 
-export IMAGE_BASENAME = "egf-image-qt4"
