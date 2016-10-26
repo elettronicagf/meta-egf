@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=eGF Demo Streaming
+Comment=Video Streaming Demo
+Icon=egfDemoCamera
+TryExec=/home/root/demo-panelpc-streaming/launchDemo.sh
+Exec=/home/root/demo-panelpc-streaming/launchDemo.sh
+StartupNotify=false
+Terminal=false
+Type=eGF
+Categories=eGF;
