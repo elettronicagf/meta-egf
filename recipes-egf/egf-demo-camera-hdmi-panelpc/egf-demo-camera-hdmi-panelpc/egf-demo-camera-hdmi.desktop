@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=eGF Demo Camera HDMI
+Comment=HDMI Demo Camera
+Icon=egfDemoCamera
+TryExec=/home/root/demo-camera-hdmi/launchDemo.sh
+Exec=/home/root/demo-camera-hdmi/launchDemo.sh
+StartupNotify=false
+Terminal=false
+Type=eGF
+Categories=eGF;
