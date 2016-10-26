@@ -5,6 +5,7 @@ do
   [[ $w == panel* ]] && export TOUCHSCREEN_MODEL=$(echo $w | cut -d'=' -f2)
 done
 
-if [ "$TOUCHSCREEN_MODEL" = "EGF_BLC1081" ]; then
-  export HAVE_TOUCHSCREEN=1
-fi
+for w in EGF_BLC1135 EGF_BLC1081 EGF_BLC1093
+do
+  [[ $TOUCHSCREEN_MODEL == $w ]] && export HAVE_TOUCHSCREEN=1
+done
