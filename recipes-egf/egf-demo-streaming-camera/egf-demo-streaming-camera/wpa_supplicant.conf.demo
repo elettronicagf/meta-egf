@@ -1,0 +1,17 @@
+ctrl_interface=/var/run/wpa_supplicant
+ctrl_interface_group=0
+update_config=1
+
+network={
+        ssid="elettronicagf_demo_pp"
+	scan_ssid=1
+	key_mgmt=WPA-PSK
+        psk="7cp[jJv?)IR5"
+}
+#network={
+#        ssid="eGF-AP-2.4GHZ"
+#        scan_ssid=1
+#        key_mgmt=WPA-PSK
+#        psk="extac918273645"
+#}
+
