@@ -18,6 +18,7 @@ IMAGE_FEATURES += "\
 IMAGE_INSTALL += " \
     opkg-utils minicom opkg mc egf-wireless egf-gpio egf-theme \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
+    mtd-utils \
 "
 
 CONFLICT_DISTRO_FEATURES = "directfb"
