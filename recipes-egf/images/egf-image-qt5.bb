@@ -16,10 +16,13 @@ IMAGE_FEATURES += "\
 "
 
 IMAGE_INSTALL += " \
-    opkg-utils minicom opkg mc egf-wireless egf-gpio egf-theme \
+    opkg-utils minicom opkg mc egf-gpio egf-theme \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
     mtd-utils \
 "
+
+IMAGE_INSTALL += "${@base_contains('MACHINE', '0541evbpopimx6',  ' egf-wireless-wl18xx', '', d)}"
+IMAGE_INSTALL += "${@base_contains('MACHINE', '0533panelpcimx6', ' egf-wireless', '', d)}"                            
 
 CONFLICT_DISTRO_FEATURES = "directfb"
 
