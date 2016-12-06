@@ -1,14 +1,14 @@
 SRCBRANCH_0533panelpcimx6dl = "0533_panel_pc"
-SRCREV_0533panelpcimx6dl = "b2961962a7b165d3792b207cb10182eb93341001"
+SRCREV_0533panelpcimx6dl = "cee2ada714d81e9bdc5bb673bb07125c3fa998d0"
 SRCBRANCH_0533panelpcimx6q = "0533_panel_pc"
-SRCREV_0533panelpcimx6q = "b2961962a7b165d3792b207cb10182eb93341001"
+SRCREV_0533panelpcimx6q = "cee2ada714d81e9bdc5bb673bb07125c3fa998d0"
 SRCBRANCH_0541evbpopimx6q = "0541_evb_pop"
-SRCREV_0541evbpopimx6q = "6d0491ec215112e60e688b87b3273dca8af5cca7"
+SRCREV_0541evbpopimx6q = "48588529adb32ac3f64ee5352f16bf33584b8708"
 
-KERNEL_SRC = "git://androidbuilder/imx53/kernel.git;protocol=ssh;user=git"
+KERNEL_SRC = "git://github.com/elettronicagf/kernel-imx.git"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
-SRC_URI[md5sum] = "93b126a72aa1f14c35a3d14d95b89bab"
+SRC_URI[md5sum] = "95e8844562f770d7ae1df33a11f559e2"
 
 SCMVERSION = "n"
 
