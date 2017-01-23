@@ -1,7 +1,7 @@
 SRCBRANCH_0533panelpcimx6dl = "0533_panel_pc"
-SRCREV_0533panelpcimx6dl = "cee2ada714d81e9bdc5bb673bb07125c3fa998d0"
+SRCREV_0533panelpcimx6dl = "8d032011358a3d9de7bb8fb3fb6243348c5eaee9"
 SRCBRANCH_0533panelpcimx6q = "0533_panel_pc"
-SRCREV_0533panelpcimx6q = "cee2ada714d81e9bdc5bb673bb07125c3fa998d0"
+SRCREV_0533panelpcimx6q = "8d032011358a3d9de7bb8fb3fb6243348c5eaee9"
 SRCBRANCH_0541evbpopimx6q = "0541_evb_pop"
 SRCREV_0541evbpopimx6q = "48588529adb32ac3f64ee5352f16bf33584b8708"
 
