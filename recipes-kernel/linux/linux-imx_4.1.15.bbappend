@@ -2,6 +2,8 @@ SRCBRANCH_0533panelpcimx6dl = "0533_panel_pc"
 SRCREV_0533panelpcimx6dl = "c82faf0d711b84b3f4a6d70d2a4debaf9ad482e4"
 SRCBRANCH_0533panelpcimx6q = "0533_panel_pc"
 SRCREV_0533panelpcimx6q = "c82faf0d711b84b3f4a6d70d2a4debaf9ad482e4"
+SRCBRANCH_0533panelpcimx6qdlsolo = "0533_panel_pc"
+SRCREV_0533panelpcimx6qdlsolo = "c82faf0d711b84b3f4a6d70d2a4debaf9ad482e4"
 SRCBRANCH_0541evbpopimx6q = "0541_evb_pop"
 SRCREV_0541evbpopimx6q = "48588529adb32ac3f64ee5352f16bf33584b8708"
 
@@ -18,4 +20,4 @@ do_copy_defconfig () {
     cp ${S}/arch/arm/configs/imx_v7_egf_defconfig ${B}/../defconfig
 }
 
-COMPATIBLE_MACHINE = "(0541evbpopimx6q|0533panelpcimx6dl|0533panelpcimx6q)"
+COMPATIBLE_MACHINE = "(0541evbpopimx6q|0533panelpcimx6dl|0533panelpcimx6q|0533panelpcimx6qdlsolo)"
