@@ -3,9 +3,7 @@ PACKAGE_INSTALL = "initramfs-boot busybox udev base-passwd udev-extraconf dosfst
 
 GF_YOCTO_ROOTFS_LIVE_VERSION = "1.0"
 
-export IMAGE_BASENAME = "egf-image-update"
 IMAGE_LINGUAS = ""
-
 
 IMAGE_FSTYPES = "${INITRAMFS_FSTYPES}"
 inherit core-image
