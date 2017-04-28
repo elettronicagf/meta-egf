@@ -1,13 +1,7 @@
-SRCBRANCH_0533panelpcimx6dl = "0533_panel_pc"
-SRCREV_0533panelpcimx6dl = "c82faf0d711b84b3f4a6d70d2a4debaf9ad482e4"
-SRCBRANCH_0533panelpcimx6q = "0533_panel_pc"
-SRCREV_0533panelpcimx6q = "c82faf0d711b84b3f4a6d70d2a4debaf9ad482e4"
-SRCBRANCH_0533panelpcimx6qdlsolo = "0533_panel_pc"
-SRCREV_0533panelpcimx6qdlsolo = "c82faf0d711b84b3f4a6d70d2a4debaf9ad482e4"
-SRCBRANCH_0541evbpopimx6q = "0541_evb_pop"
-SRCREV_0541evbpopimx6q = "172cd75cd4567af709c435785eebcbf2afa2d73b"
+SRCBRANCH_0571consolesmart = "0571_console_smart"
+SRCREV_0571consolesmart = "e2de22d00c826672be45c90400a12f5c84be61c8"
 
-KERNEL_SRC = "git://github.com/elettronicagf/kernel-imx.git"
+KERNEL_SRC = "git://androidbuilder/imx53/kernel.git;protocol=ssh;user=git"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
 SRC_URI[md5sum] = "95e8844562f770d7ae1df33a11f559e2"
@@ -20,4 +14,4 @@ do_copy_defconfig () {
     cp ${S}/arch/arm/configs/imx_v7_egf_defconfig ${B}/../defconfig
 }
 
-COMPATIBLE_MACHINE = "(0541evbpopimx6q|0533panelpcimx6dl|0533panelpcimx6q|0533panelpcimx6qdlsolo)"
+COMPATIBLE_MACHINE = "(0571consolesmart)"
