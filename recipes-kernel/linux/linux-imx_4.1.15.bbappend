@@ -1,7 +1,7 @@
 SRCBRANCH_0571consolesmart = "0571_console_smart"
-SRCREV_0571consolesmart = "e2de22d00c826672be45c90400a12f5c84be61c8"
+SRCREV_0571consolesmart = "c16dfe2d937e975a26d45ba070aef82a1a0769b8"
 
-KERNEL_SRC = "git://androidbuilder/imx53/kernel.git;protocol=ssh;user=git"
+KERNEL_SRC = "git://bitbucket.org/cefla/kernel-imx.git;protocol=ssh;user=git"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
 SRC_URI[md5sum] = "95e8844562f770d7ae1df33a11f559e2"
