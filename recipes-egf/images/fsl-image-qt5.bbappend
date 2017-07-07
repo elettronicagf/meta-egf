@@ -6,7 +6,6 @@ IMAGE_FEATURES += "\
 "
 
 IMAGE_FEATURES_remove = " \
-    debug-tweaks \
     tools-profile \
     nfs-server \
     tools-debug \
