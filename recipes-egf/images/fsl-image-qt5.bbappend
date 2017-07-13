@@ -14,18 +14,35 @@ IMAGE_FEATURES_remove = " \
 "
 
 IMAGE_INSTALL += " \
-    opkg-utils minicom opkg egf-gpio can-utils iproute2 \
-    openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
+    opkg-utils \
+    minicom \
+    opkg \
+    egf-gpio \
+    can-utils \
+    iproute2 \
+    openssh \
+    openssh-sftp-server \
+    nano \
+    strace \
+    i2c-tools \
+    gdb \
+    gdbserver \
     mtd-utils \
+    mtd-utils-ubifs \
+    dosfstools \
+    evtest \
+    fbset \
+    memtester \
+    e2fsprogs-mke2fs \
+    init-display-mipi \
 "
 
-IMAGE_INSTALL_remove = " \
+CORE_IMAGE_EXTRA_INSTALL_remove = " \
     packagegroup-tools-bluetooth \
-    packagegroup-fsl-tools-audio \
-    packagegroup-fsl-tools-gpu \
-    packagegroup-fsl-tools-gpu-external \
-    packagegroup-fsl-tools-testapps \
-    packagegroup-fsl-tools-benchmark \
+"
+
+QT5_IMAGE_INSTALL_common_remove = " \
+	packagegroup-qt5-toolchain-target \
 "
 
 IMAGE_FSTYPES = "tar.bz2 ubi"
