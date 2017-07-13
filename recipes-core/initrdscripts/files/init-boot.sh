@@ -44,7 +44,7 @@ mkdir -p /var/run
 
 mount -t devtmpfs none /dev
 
-/lib/udev/udevd --daemon
+udevd --daemon
 udevadm trigger --action=add
 udevadm settle --timeout=5
 
