@@ -51,12 +51,17 @@ udevadm settle --timeout=5
 [ -z "$CONSOLE" ] && CONSOLE="/dev/console"
 
 echo "Look For Update Script..."
-if [ -f $SOURCE1/$UPDATE_SCRIPT ] ; then
-	exec_update $SOURCE1
-else	
-	if [ -f $SOURCE2/$UPDATE_SCRIPT ] ; then
-		exec_update $SOURCE2
+for i in 1 2 3 4 5
+do
+	echo try $i
+	if [ -f $SOURCE1/$UPDATE_SCRIPT ] ; then
+		exec_update $SOURCE1
 	else	
-		fatal "update script not found "
+		if [ -f $SOURCE2/$UPDATE_SCRIPT ] ; then
+			exec_update $SOURCE2
+		else	
+			[ $i -eq 5 ] && fatal "update script not found "
+		fi
 	fi
-fi
+	sleep 2
+done
