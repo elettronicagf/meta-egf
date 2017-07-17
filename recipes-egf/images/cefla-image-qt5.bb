@@ -33,7 +33,7 @@ IMAGE_FEATURES += "\
 IMAGE_INSTALL += " \
     opkg-utils minicom opkg mc egf-gpio canutils iproute2 \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
-    mtd-utils \
+    mtd-utils mtd-utils-ubifs udev-extraconf \
 "
 
 CONFLICT_DISTRO_FEATURES = "directfb"
@@ -81,6 +81,7 @@ IMAGE_INSTALL += " \
 ${QT5_IMAGE_INSTALL} \
 "
 
-IMAGE_FSTYPES = "tar.bz2 ubifs"
+IMAGE_FSTYPES = "tar.bz2 ubi"
 UBINIZE_ARGS = " -m 2048 -p 128KiB -s 2048 "
-MKUBIFS_ARGS = " -c 4015 -e 128KiB -m 2KiB -F"
+MKUBIFS_ARGS = " -c 1600 -e 126976 -m 2KiB -F"
+UBI_VOLNAME = "rootfs"
