@@ -4,7 +4,7 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 UPDATE_SCRIPT="update.bin"
 SOURCE1="/run/media/sda1"
 SOURCE2="/run/media/sda"
-PASSWORD="8fX589i2ed_@YT#xx++]]00$aqe34=="
+PASSWORD='8fX589i2ed_@YT#xx++]]00$aqe34=='
 
 fatal() {
     echo $1 >$CONSOLE
