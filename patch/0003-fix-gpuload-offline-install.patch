@@ -1,0 +1,30 @@
+From 4478c88f3013162d71ecac463bbf535d5636f07e Mon Sep 17 00:00:00 2001
+From: yocto <yocto@androidbuilder>
+Date: Wed, 26 Jul 2017 16:24:14 +0200
+Subject: [PATCH] fix gpuload offline install
+
+---
+ imx/meta-bsp/recipes-core/initscripts/initscripts_%.bbappend | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/imx/meta-bsp/recipes-core/initscripts/initscripts_%.bbappend b/imx/meta-bsp/recipes-core/initscripts/initscripts_%.bbappend
+index c0fd0d3..f46392d 100644
+--- a/imx/meta-bsp/recipes-core/initscripts/initscripts_%.bbappend
++++ b/imx/meta-bsp/recipes-core/initscripts/initscripts_%.bbappend
+@@ -12,11 +12,12 @@ do_install_append_mx6 () {
+     install -d ${D}/lib/systemd/system
+     install -m 0755 ${WORKDIR}/gpuload ${D}/usr/bin
+     install -m 0755 ${WORKDIR}/gpuload.service ${D}/lib/systemd/system
++    install -d ${D}/etc/systemd/system/multi-user.target.wants
+ }
+ 
+ pkg_postinst_${PN}_append_mx6 () {
+     #!/bin/sh
+-    ln -s /lib/systemd/system/gpuload.service /etc/systemd/system/multi-user.target.wants/
++    ln -s /lib/systemd/system/gpuload.service $D/etc/systemd/system/multi-user.target.wants/
+ }
+ 
+ FILES_${PN}_append_mx6 = " /lib/systemd/system/gpuload.service /usr/bin/gpuload"
+-- 
+2.7.4
+
