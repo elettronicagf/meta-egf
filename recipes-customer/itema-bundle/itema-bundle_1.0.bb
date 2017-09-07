@@ -2,11 +2,11 @@ SUMMARY = "File binari e Script di supporto ad immagine ITEMA"
 DESCRIPTION = "File binari e Script di supporto ad immagine ITEMA."
 SECTION = "base"
 LICENSE = "MIT"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/rmrw;md5=a2b539fd267cead9cd4b4325d944c87b"
 PR = "r1"
 
-SRC_URI = "file://java8u33.tar.bz2 \
-				file://rmrw \
+SRC_URI = "file://rmrw \
 				file://rmro \
 				file://rmrwdata \
                 file://rmrodata \
@@ -16,7 +16,6 @@ SRC_URI = "file://java8u33.tar.bz2 \
                 file://splash/logo-itema-loading.bgr.g \
                 file://splash/logo-itema.bgr.g \
                 file://touchcalibrate.sh \
-                file://fonts.tar.gz \
                 file://ccrypt/ccat \
                 file://ccrypt/ccdecrypt \
                 file://ccrypt/ccrypt \
@@ -24,7 +23,7 @@ SRC_URI = "file://java8u33.tar.bz2 \
                 file://ccrypt/ccencrypt \
                 "
                 
-FILES_${PN} += "${datadir}/itema /opt/java8u33 /usr/share/fonts/ttf"
+FILES_${PN} += "${datadir}/itema"
 
 DEPENDS = "libx11"
 
@@ -36,11 +35,10 @@ inherit update-rc.d
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INSANE_SKIP_${PN} = "ldflags"
 
+#        cp -av ${WORKDIR}/opt 		${D}
 do_install_append () {
         install -d ${D}${bindir}
         install -d ${D}${sysconfdir}/init.d
-        
-        cp -av ${WORKDIR}/opt 		${D}
         
         install -m 0755    ${WORKDIR}/rmrw              ${D}${bindir}
         install -m 0755    ${WORKDIR}/rmro              ${D}${bindir}

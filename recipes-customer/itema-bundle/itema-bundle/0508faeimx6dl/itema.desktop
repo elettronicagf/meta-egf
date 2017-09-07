@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Itema P7300
+Comment=Itema P7300 Terminal
+Exec=/home/root/terminal/app/run3.sh
+Icon=computer
+Terminal=false
+Type=Application
+StartupNotify=false
+#StartupWMClass=x11vnc_port_prompt
+Categories=Network;RemoteAccess;
