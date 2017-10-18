@@ -13,7 +13,15 @@ IMAGE_ROOTFS_SIZE = "8192"
 IMAGE_INSTALL_remove += "packagegroup-fsl-bluez5-tools"
 IMAGE_INSTALL_remove += "packagegroup-fsl-tools-gpu"
 
-PACKAGE_INSTALL += " mtd-utils mtd-utils-ubifs unzip nano util-linux"
+PACKAGE_INSTALL += " mtd-utils \
+					 mtd-utils-ubifs \
+					 unzip \
+					 nano \
+					 util-linux \
+					 egf-gpio \
+					 i2c-tools \
+					 init-display-mipi \
+"
 
 write_version () {
 #scrittura versione su filesystem
