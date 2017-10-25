@@ -23,9 +23,8 @@ IMAGE_INSTALL += " \
     mtd-utils \
 "
 
-IMAGE_INSTALL += "${@base_contains('MACHINE', '0541evbpopimx6',  ' egf-wireless-wl18xx', '', d)}"
-IMAGE_INSTALL += "${@base_contains('MACHINE', '0533panelpcimx6', ' egf-wireless', '', d)}"                            
-
+IMAGE_INSTALL += "${@base_contains('MACHINE', '0556evbpopimx6',  ' egf-wireless-wl18xx', '', d)}"
+                        
 CONFLICT_DISTRO_FEATURES = "directfb"
 
 # X11 packages
