@@ -5,9 +5,8 @@ LICENSE = "MIT"
 
 inherit core-image
 inherit populate_sdk
-inherit populate_sdk_qt5
 
-GF_YOCTO_ROOTFS_VERSION = "1.0"
+GF_YOCTO_ROOTFS_VERSION = "2.0"
 
 IMAGE_FEATURES += "${@base_contains('DISTRO_FEATURES', 'x11', \
                             ' x11-base x11-sato hwcodecs', '', d)}"
@@ -26,7 +25,7 @@ IMAGE_INSTALL += " \
 "
 
 IMAGE_INSTALL += "${@base_contains('MACHINE', '0556evbpopimx6q',  ' egf-wireless-wl18xx', '', d)}"
-                        
+
 CONFLICT_DISTRO_FEATURES = "directfb"
 
 # X11 packages
@@ -47,48 +46,15 @@ MM_IMAGE_INSTALL_mx6 = "packagegroup-fsl-multimedia-gstreamer1.0-core"
 MM_IMAGE_INSTALL_mx6ul = "packagegroup-fsl-multimedia-gstreamer1.0-core"
 MM_IMAGE_INSTALL_mx7 = "packagegroup-fsl-multimedia-gstreamer1.0-core"
 
-#mtd-utils mtd-utils-ubifs bluez5
-
-# Install Freescale QT demo applications
-MACHINE_QT5_MULTIMEDIA_PLAYER = ""
-MACHINE_QT5_MULTIMEDIA_PLAYER_mx6q = "${@base_contains("MACHINE_GSTREAMER_1_0_PLUGIN", "imx-gst1.0-plugin", "imx-qtapplications", "", d)}"
-MACHINE_QT5_MULTIMEDIA_PLAYER_mx6dl = "${@base_contains("MACHINE_GSTREAMER_1_0_PLUGIN", "imx-gst1.0-plugin", "imx-qtapplications", "", d)}"
-# Install Freescale QT demo applications for X11 backend only
-MACHINE_QT5_MULTIMEDIA_APPS = "${@base_contains('DISTRO_FEATURES', 'x11', base_contains('DISTRO_FEATURES', 'wayland', \
-                                 '', '${MACHINE_QT5_MULTIMEDIA_PLAYER}', d), '', d)}"
-
-QT5_IMAGE_INSTALL = ""
-QT5_IMAGE_INSTALL_common = " \
-    packagegroup-qt5-toolchain-target \
-    packagegroup-qt5-demos \
-    ${X11_IMAGE_INSTALL} \
-    ${MACHINE_QT5_MULTIMEDIA_APPS} \
-    "
-QT5_IMAGE_INSTALL_mx6 = " \
-    ${QT5_IMAGE_INSTALL_common} \
-    "
-QT5_IMAGE_INSTALL_mx6sl = "${@base_contains('DISTRO_FEATURES', 'x11','${QT5_IMAGE_INSTALL_common}', \
-    'qtbase qtbase-fonts qtbase-plugins', d)}"
-
-QT5_IMAGE_INSTALL_mx6ul = "${@base_contains('DISTRO_FEATURES', 'x11','${QT5_IMAGE_INSTALL_common}', \
-    'qtbase qtbase-examples qtbase-fonts qtbase-plugins', d)}"
-
-QT5_IMAGE_INSTALL_mx7 = "${@base_contains('DISTRO_FEATURES', 'x11','${QT5_IMAGE_INSTALL_common}', \
-    'qtbase qtbase-examples qtbase-fonts qtbase-plugins', d)}"
-
-QT5_IMAGE_INSTALL_remove = " packagegroup-qt5-webengine"
-
 IMAGE_INSTALL += " \
     ${X11_IMAGE_INSTALL} \
     ${X11_IMAGE_INSTALL_GRAPHICS} \
     ${MM_IMAGE_INSTALL} \
     "
 
-IMAGE_INSTALL += " \
-${QT5_IMAGE_INSTALL} \
-"
-export IMAGE_BASENAME = "fsl-image-qt5"
+#IMAGE_INSTALL += "${QT4_IMAGE_INSTALL}"
 
+#MACHINE_FEATURES += " wifi "
 fix_image() {
 
 		echo ${GF_YOCTO_ROOTFS_VERSION} > ${IMAGE_ROOTFS}/etc/version.gf
@@ -101,12 +67,18 @@ fix_image() {
 		rm -rf ${IMAGE_ROOTFS}/lib/modules/
 		rm -rf ${IMAGE_ROOTFS}/boot/*
 		
-		mv ${IMAGE_ROOTFS}/usr/share/pixmaps/matchbox-keyboard-new.png ${IMAGE_ROOTFS}/usr/share/pixmaps/matchbox-keyboard.png		
+		rm -rf ${IMAGE_ROOTFS}/usr/bin/qt4/examples
+		rm -rf ${IMAGE_ROOTFS}/usr/bin/qt4/demos
+		rm -rf ${IMAGE_ROOTFS}/usr/share/qt4/mkspecs
+		rm -rf ${IMAGE_ROOTFS}/usr/share/doc/qt4
+		
+		#only if egf-theme is included
+		mv ${IMAGE_ROOTFS}/usr/share/pixmaps/matchbox-keyboard-new.png ${IMAGE_ROOTFS}/usr/share/pixmaps/matchbox-keyboard.png	
 		sed -i -e 's/Sato/GF/g' ${IMAGE_ROOTFS}/etc/matchbox/session
-		sed -i -e 's/Sato/GF/g' ${IMAGE_ROOTFS}/etc/gconf/gconf.xml.defaults/desktop/poky/interface/%gconf.xml
-}		
+		sed -i -e 's/Sato/GF/g' ${IMAGE_ROOTFS}/etc/gconf/gconf.xml.defaults/desktop/poky/interface/%gconf.xml	
+}
 
 
 IMAGE_PREPROCESS_COMMAND += "fix_image"
 
-export IMAGE_BASENAME = "egf-image-qt5"
+export IMAGE_BASENAME = "egf-image"

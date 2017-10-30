@@ -1,11 +1,3 @@
 export TOUCHSCREEN_MODEL=
+export HAVE_TOUCHSCREEN=1
 
-for w in $(cat /proc/cmdline)
-do
-  [[ $w == panel* ]] && export TOUCHSCREEN_MODEL=$(echo $w | cut -d'=' -f2)
-done
-
-for w in EGF_BLC1135 EGF_BLC1081 EGF_BLC1093
-do
-  [[ $TOUCHSCREEN_MODEL == $w ]] && export HAVE_TOUCHSCREEN=1
-done

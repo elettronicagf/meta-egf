@@ -1,0 +1,1 @@
+xinput set-int-prop "SX8652 Touchscreen" "Evdev Axis Calibration" 32 103 3946 3843 257; xinput set-int-prop "SX8652 Touchscreen" "Evdev Axes Swap" 8 0;
