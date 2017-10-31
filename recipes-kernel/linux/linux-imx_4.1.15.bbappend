@@ -1,5 +1,5 @@
 SRCBRANCH_0556evbpopimx6q = "0556_evb_pop"
-SRCREV_0556evbpopimx6q = "47e2ae25df6ecc5edfd1833c0ad4456c9044f368"
+SRCREV_0556evbpopimx6q = "1377bcfb5b42be78b85e60d3722e96454e1f650e"
 
 KERNEL_SRC = "git://github.com/elettronicagf/kernel-imx.git"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
