@@ -27,6 +27,7 @@ CORExx_IMAGE_EXTRA_INSTALL += " \
 IMAGE_FEATURES += "\
 	package-management \
 	read-only-rootfs \
+	x11-base \
 "
 
 IMAGE_INSTALL += " \
@@ -35,7 +36,15 @@ IMAGE_INSTALL += " \
     mtd-utils mtd-utils-ubifs udev-extraconf \
 "
 
-IMAGE_INSTALL += "qtbase qtbase-tools qtbase-plugins"
+IMAGE_INSTALL += "qtbase \
+                  qtbase-fonts \
+                  qtbase-tools \
+                  qtbase-plugins \
+                  qtdeclarative \
+                  qtsvg \
+                  packagegroup-qt5-webengine \
+                  packagegroup-fsl-gstreamer1.0-full \
+"
 
 CONFLICT_DISTRO_FEATURES = "directfb"
 
