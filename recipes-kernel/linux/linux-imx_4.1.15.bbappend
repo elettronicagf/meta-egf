@@ -1,5 +1,5 @@
-SRCBRANCH_0556evbpopimx6q = "0556_evb_pop"
-SRCREV_0556evbpopimx6q = "1377bcfb5b42be78b85e60d3722e96454e1f650e"
+SRCBRANCH_0609equbeimx6q = "0541_evb_pop"
+SRCREV_0609equbeimx6q = "3976fcea4f4812ab90c4ff2c57853da163902c79"
 
 KERNEL_SRC = "git://github.com/elettronicagf/kernel-imx.git"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
@@ -15,4 +15,4 @@ do_copy_defconfig () {
     cp ${S}/arch/arm/configs/imx_v7_egf_defconfig ${B}/../defconfig
 }
 
-COMPATIBLE_MACHINE = "(0556evbpopimx6q)"
+COMPATIBLE_MACHINE = "(0609equbeimx6q)"

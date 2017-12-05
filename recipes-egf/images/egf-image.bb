@@ -24,7 +24,7 @@ IMAGE_INSTALL += " \
     mtd-utils \
 "
 
-IMAGE_INSTALL += "${@base_contains('MACHINE', '0556evbpopimx6q',  ' egf-wireless-wl18xx', '', d)}"
+IMAGE_INSTALL += "${@base_contains('MACHINE', '0609equbeimx6q',  ' egf-wireless-wl18xx', '', d)}"
 
 CONFLICT_DISTRO_FEATURES = "directfb"
 

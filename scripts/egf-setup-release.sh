@@ -5,7 +5,7 @@
 
 if [ -z "$MACHINE" ]; then
     echo setting to default machine
-    MACHINE='0556evbpopimx6q'
+    MACHINE='0609equbeimx6q'
 fi
 
 source ./fsl-setup-release.sh "$@"
