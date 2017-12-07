@@ -21,7 +21,7 @@ IMAGE_FEATURES += "\
 IMAGE_INSTALL += " \
     opkg-utils minicom opkg mc egf-gpio egf-theme \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
-    mtd-utils \
+    mtd-utils mraa \
 "
 
 IMAGE_INSTALL += "${@base_contains('MACHINE', '0609equbeimx6q',  ' egf-wireless-wl18xx', '', d)}"

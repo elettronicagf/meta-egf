@@ -1,0 +1,413 @@
+From fe8b8f5da583f3cc00d8080df52ba73142ead272 Mon Sep 17 00:00:00 2001
+From: Stefano Donati <stefano.donati@elettronicagf.it>
+Date: Thu, 7 Dec 2017 09:10:36 +0100
+Subject: eQube add platform support
+
+
+diff --git a/api/mraa/types.h b/api/mraa/types.h
+index 8479b76..61565e2 100644
+--- a/api/mraa/types.h
++++ b/api/mraa/types.h
+@@ -57,6 +57,7 @@ typedef enum {
+     MRAA_PHYBOARD_WEGA = 14,        /**< The phyBOARD-Wega */
+     MRAA_DE_NANO_SOC = 15,          /**< Terasic DE-Nano-SoC Board */
+     MRAA_UP2 = 16,                  /**< The UP^2 Board */
++    MRAA_EQUBE = 18,				/**< Elettronica GF eQube Board */
+ 
+     // USB platform extenders start at 256
+     MRAA_FTDI_FT4222 = 256,         /**< FTDI FT4222 USB to i2c bridge */
+diff --git a/api/mraa/types.hpp b/api/mraa/types.hpp
+index 1b533cb..9bdae5e 100644
+--- a/api/mraa/types.hpp
++++ b/api/mraa/types.hpp
+@@ -55,6 +55,7 @@ typedef enum {
+     PHYBOARD_WEGA = 14,        /**< The phyBOARD-Wega */
+     DE_NANO_SOC = 15,          /**< Terasic DE-Nano-SoC Board */
+     INTEL_UP2 = 16,            /**< The UP^2 Board */
++    EQUBE = 18,				   /**< Elettronica GF eQube Board */
+ 
+     FTDI_FT4222 = 256,         /**< FTDI FT4222 USB to i2c bridge */
+ 
+diff --git a/include/arm/eqube.h b/include/arm/eqube.h
+new file mode 100644
+index 0000000..8a07c9a
+--- /dev/null
++++ b/include/arm/eqube.h
+@@ -0,0 +1,53 @@
++/*
++ * Author: Stefano Donati <stefano.donati@elettronicagf.it>
++ * Copyright (c) 2017 Elettronica GF s.r.l.
++ *
++ * Based on am335x.h
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sublicense, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
++ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
++ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
++ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#pragma once
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++#include <stdlib.h>
++#include <string.h>
++#include <sys/mman.h>
++#include <mraa/types.h>
++
++#include "common.h"
++#include "mraa_internal.h"
++
++#define SYSFS_CLASS_PWM "/sys/class/pwm/"
++#define SYSFS_CLASS_MMC "/sys/class/mmc_host/"
++
++#define MMAP_PATH "/dev/mem"
++#define MAX_SIZE 64
++
++#define MRAA_EQUBE_PINCOUNT 41
++
++mraa_board_t* mraa_eqube();
++
++#ifdef __cplusplus
++}
++#endif
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index ed9b356..fd6da65 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -95,6 +95,7 @@ set (mraa_LIB_ARM_SRCS_NOAUTO
+   ${PROJECT_SOURCE_DIR}/src/arm/phyboard.c
+   ${PROJECT_SOURCE_DIR}/src/arm/banana.c
+   ${PROJECT_SOURCE_DIR}/src/arm/de_nano_soc.c
++  ${PROJECT_SOURCE_DIR}/src/arm/eqube.c
+ )
+ 
+ set (mraa_LIB_MOCK_SRCS_NOAUTO
+diff --git a/src/arm/arm.c b/src/arm/arm.c
+index 40eccf5..2ae8c7c 100644
+--- a/src/arm/arm.c
++++ b/src/arm/arm.c
+@@ -32,6 +32,7 @@
+ #include "arm/beaglebone.h"
+ #include "arm/phyboard.h"
+ #include "arm/raspberry_pi.h"
++#include "arm/eqube.h"
+ #include "mraa_internal.h"
+ 
+ 
+@@ -75,7 +76,12 @@ mraa_arm_platform()
+                     }
+                 } else if (strstr(line, "DE0/DE10-Nano-SoC")) {
+                         platform_type = MRAA_DE_NANO_SOC;
+-                }
++				} else if (strstr(line, "i.MX6")) {
++					if (mraa_file_contains("/proc/device-tree/model", "Elettronica GF")) {
++						platform_type = MRAA_EQUBE;
++					}
++				}
++                
+             }
+         }
+         fclose(fh);
+@@ -115,6 +121,9 @@ mraa_arm_platform()
+         case MRAA_DE_NANO_SOC:
+             plat = mraa_de_nano_soc();
+             break;
++		case MRAA_EQUBE:
++			plat = mraa_eqube();
++			break;
+         default:
+             plat = NULL;
+             syslog(LOG_ERR, "Unknown Platform, currently not supported by MRAA");
+diff --git a/src/arm/eqube.c b/src/arm/eqube.c
+new file mode 100644
+index 0000000..45593f6
+--- /dev/null
++++ b/src/arm/eqube.c
+@@ -0,0 +1,270 @@
++/*
++ * Author: Stefano Donati <stefano.donati@elettronicagf.it>
++ * Copyright (c) 2017 Elettronica GF s.r.l.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sublicense, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
++ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
++ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
++ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include <stdlib.h>
++#include <stdarg.h>
++#include <string.h>
++#include <sys/mman.h>
++#include <mraa/common.h>
++#include <mraa_internal_types.h>
++#include <termios.h>
++#include <errno.h>
++#include "common.h"
++#include "arm/eqube.h"
++
++#define PLATFORM_NAME_EQUBE "eQube"
++
++//return the sysfs gpio number using the imx6 gpio bank numbering scheme
++#define IMX6_GPIO(x,y) (((x - 1) * 32 ) + y )
++
++void mraa_arm_gpio_pininfo(mraa_board_t* board, int index, int gpionum, char* fmt, ...)
++{
++	va_list arg_ptr;
++	if (index > board->phy_pin_count)
++		return;
++
++	mraa_pininfo_t* pininfo = &board->pins[index];
++	va_start(arg_ptr, fmt);
++	vsnprintf(pininfo->name, MRAA_PIN_NAME_SIZE, fmt, arg_ptr);
++	va_end(arg_ptr);
++	if (gpionum >= 0)
++		pininfo->capabilities = (mraa_pincapabilities_t){ 1, 1, 0, 0, 0, 0, 0, 0 };
++	else
++		pininfo->capabilities = (mraa_pincapabilities_t){ 0, 0, 0, 0, 0, 0, 0, 0 };
++	pininfo->gpio.pinmap = gpionum;
++	pininfo->gpio.mux_total = 0;
++}
++
++void mraa_arm_i2c_pininfo(mraa_board_t* board, int index, char* fmt, ...)
++{
++	va_list arg_ptr;
++	if (index > board->phy_pin_count)
++		return;
++
++	mraa_pininfo_t* pininfo = &board->pins[index];
++	va_start(arg_ptr, fmt);
++	vsnprintf(pininfo->name, MRAA_PIN_NAME_SIZE, fmt, arg_ptr);
++	va_end(arg_ptr);
++	pininfo->capabilities = (mraa_pincapabilities_t){ 1, 0, 0, 0, 0, 1, 0, 0 };
++	pininfo->i2c.mux_total = 0;
++}
++
++void mraa_arm_uart_pininfo(mraa_board_t* board, int index, char* fmt, ...)
++{
++	va_list arg_ptr;
++	if (index > board->phy_pin_count)
++		return;
++
++	mraa_pininfo_t* pininfo = &board->pins[index];
++	va_start(arg_ptr, fmt);
++	vsnprintf(pininfo->name, MRAA_PIN_NAME_SIZE, fmt, arg_ptr);
++	va_end(arg_ptr);
++	pininfo->capabilities = (mraa_pincapabilities_t){ 1, 0, 0, 0, 0, 0, 0, 1 };
++	pininfo->uart.mux_total = 0;
++}
++
++void mraa_arm_spi_pininfo(mraa_board_t* board, int index, char* fmt, ...)
++{
++	va_list arg_ptr;
++	if (index > board->phy_pin_count)
++		return;
++
++	mraa_pininfo_t* pininfo = &board->pins[index];
++	va_start(arg_ptr, fmt);
++	vsnprintf(pininfo->name, MRAA_PIN_NAME_SIZE, fmt, arg_ptr);
++	va_end(arg_ptr);
++	pininfo->capabilities = (mraa_pincapabilities_t){ 1, 0, 0, 0, 1, 0, 0, 0 };
++	pininfo->spi.mux_total = 0;
++}
++
++void mraa_arm_pwm_pininfo(mraa_board_t* board, int index, char* fmt, ...)
++{
++	va_list arg_ptr;
++	if (index > board->phy_pin_count)
++		return;
++
++	mraa_pininfo_t* pininfo = &board->pins[index];
++	va_start(arg_ptr, fmt);
++	vsnprintf(pininfo->name, MRAA_PIN_NAME_SIZE, fmt, arg_ptr);
++	va_end(arg_ptr);
++	pininfo->capabilities = (mraa_pincapabilities_t){ 1, 0, 1, 0, 0, 0, 0, 0 };
++	pininfo->pwm.mux_total = 0;
++}
++
++mraa_result_t mraa_eqube_uart_set_flowcontrol(mraa_uart_context dev, mraa_boolean_t xonxoff, mraa_boolean_t rtscts)
++{
++	if (!dev) {
++        syslog(LOG_ERR, "uart: set_flowcontrol: context is NULL");
++        return MRAA_ERROR_INVALID_HANDLE;
++    }
++    
++    if (xonxoff)
++        return MRAA_ERROR_FEATURE_NOT_SUPPORTED;
++    
++    // rtscts
++    struct termios termio;
++
++    // get current modes
++    if (tcgetattr(dev->fd, &termio)) {
++        syslog(LOG_ERR, "uart%i: set_flowcontrol: tcgetattr() failed: %s", dev->index, strerror(errno));
++         return MRAA_ERROR_INVALID_RESOURCE;
++    }
++
++    if (rtscts) {
++        termio.c_cflag |= CRTSCTS;
++    } else {
++        termio.c_cflag &= ~CRTSCTS;
++    }
++
++    if (tcsetattr(dev->fd, TCSAFLUSH, &termio) < 0) {
++        syslog(LOG_ERR, "uart%i: set_flowcontrol: tcsetattr() failed: %s", dev->index, strerror(errno));
++        return MRAA_ERROR_FEATURE_NOT_SUPPORTED;
++    }
++
++    return MRAA_SUCCESS;
++    
++}
++
++mraa_board_t* mraa_eqube()
++{
++	int i;
++	
++	mraa_board_t* b = (mraa_board_t*) calloc(1, sizeof(mraa_board_t));
++	if (b ==NULL) {
++		return NULL;
++	} 
++	
++	
++	b->platform_name = PLATFORM_NAME_EQUBE;
++	b->no_bus_mux = 1;
++	b->phy_pin_count = MRAA_EQUBE_PINCOUNT;
++	
++	if (b->platform_name == NULL) {
++		goto error;
++	}
++
++	b->pins = (mraa_pininfo_t*) calloc(b->phy_pin_count,sizeof(mraa_pininfo_t));
++	if (b->pins == NULL) {
++		goto error;
++	}
++
++	b->adv_func = (mraa_adv_func_t*) calloc(1, sizeof(mraa_adv_func_t));
++	if (b->adv_func == NULL) {
++		free(b->pins);
++		goto error;
++	}
++
++	b->adv_func->uart_set_flowcontrol_replace = &mraa_eqube_uart_set_flowcontrol;
++
++	// CN9 on 0541
++	mraa_arm_gpio_pininfo(b, 0, -1, "INVALID");
++	mraa_arm_spi_pininfo(b, 4, "ECSPI3_MOSI");
++	mraa_arm_spi_pininfo(b, 5, "ECSPI3_SCLK");
++	mraa_arm_spi_pininfo(b, 6, "ECSPI3_SS1");
++	mraa_arm_spi_pininfo(b, 7, "ECSPI3_SS0");
++	mraa_arm_spi_pininfo(b, 8, "ECSPI3_MISO");
++	mraa_arm_uart_pininfo(b, 9, "UART2_TX");
++	mraa_arm_uart_pininfo(b, 10, "UART2_RX");
++	mraa_arm_uart_pininfo(b, 11, "UART2_CTS");
++	mraa_arm_uart_pininfo(b, 12, "UART2_RTS");
++	mraa_arm_pwm_pininfo(b, 18, "PWM1_OUT");
++	mraa_arm_gpio_pininfo(b, 19, IMX6_GPIO(6, 0), "GPIO6_IO00");
++	mraa_arm_gpio_pininfo(b, 20, IMX6_GPIO(5, 31), "GPIO5_IO31");
++	mraa_arm_gpio_pininfo(b, 21, IMX6_GPIO(5, 30), "GPIO5_IO30");
++	mraa_arm_i2c_pininfo(b, 22, "I2C3_SCL");
++	mraa_arm_i2c_pininfo(b, 23, "I2C3_SDA");
++	mraa_arm_i2c_pininfo(b, 24, "I2C1_SCL");
++	mraa_arm_i2c_pininfo(b, 25, "I2C1_SDA");
++
++	// I2C BUS DEFINITIONS
++    b->i2c_bus_count = 2;
++    b->def_i2c_bus = 0;
++	//I2C1
++	b->i2c_bus[0].name = "I2C1";
++    b->i2c_bus[0].bus_id = 0;
++    b->i2c_bus[0].sda = 25;
++    b->i2c_bus[0].scl = 24;
++	//I2C3
++	b->i2c_bus[1].name = "I2C3";
++    b->i2c_bus[1].bus_id = 2;
++    b->i2c_bus[1].sda = 23;
++    b->i2c_bus[1].scl = 22;
++	
++	//UART BUS DEFINITIONS
++	b->uart_dev_count = 1;
++	b->def_uart_dev = 1;
++	//UART2
++	b->uart_dev[0].device_path = "/dev/ttymxc1";
++	b->uart_dev[0].name = "UART2";
++	b->uart_dev[0].index = 1;
++	b->uart_dev[0].rx = 10;
++    b->uart_dev[0].tx = 9;
++	b->uart_dev[0].rts = 12;
++    b->uart_dev[0].cts = 11;
++	
++	//SPI BUS DEFINITIONS
++	b->spi_bus_count = 2;
++    b->def_spi_bus = 0;
++    //SPIDEV2.0
++    b->spi_bus[0].bus_id = 2;
++    b->spi_bus[0].slave_s = 0;
++    b->spi_bus[0].name = "ECSPI3 SS0";
++    b->spi_bus[0].cs = 7;
++    b->spi_bus[0].mosi = 4;
++    b->spi_bus[0].miso = 8;
++    b->spi_bus[0].sclk = 5;
++	//SPIDEV2.1
++    b->spi_bus[1].bus_id = 2;
++    b->spi_bus[1].slave_s = 1;
++    b->spi_bus[0].name = "ECSPI3 SS1";
++    b->spi_bus[1].cs = 6;
++    b->spi_bus[1].mosi = 4;
++    b->spi_bus[1].miso = 8;
++    b->spi_bus[1].sclk = 5;
++	
++	//PWM
++	b->pwm_default_period = 500;
++    b->pwm_max_period = 2147483;
++    b->pwm_min_period = 1;
++	b->pins[18].pwm.pinmap = 0;
++	b->pins[18].pwm.mux_total = 0;
++	
++	b->gpio_count = 0;
++	
++	for (i = 0; i < b->phy_pin_count; i++) {
++		if (b->pins[i].capabilities.gpio) {
++			b->gpio_count++;
++		}
++	}
++
++	return b;
++
++error:
++	syslog(LOG_CRIT, "eQube: failed to initialize");
++	free(b);
++	return NULL;
++	
++	
++}
++
