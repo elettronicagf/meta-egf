@@ -65,6 +65,10 @@ fix_readonly_image() {
 fix_image() {
 
 		echo ${GF_YOCTO_ROOTFS_VERSION} > ${IMAGE_ROOTFS}/etc/version.gf
+		
+		#rimozione kernel e moduli non egf
+		rm ${IMAGE_ROOTFS}/boot/*
+		rm -rf ${IMAGE_ROOTFS}/lib/modules/*
 
 		#rimozione ts calibration
 		#rm ${IMAGE_ROOTFS}/etc/X11/Xinit.d/89xTs_Calibrate
