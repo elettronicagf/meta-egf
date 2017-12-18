@@ -1,12 +1,15 @@
 DESCRIPTION = "Immagine per Applicazione Telaio ITEMA. Modulo 0508"
 
+inherit core-image
+
 IMAGE_FEATURES += "\
-    ${@base_contains('DISTRO_FEATURES', 'x11', 'package-management x11-base x11-sato read-only-rootfs', '', d)} \
+    ${@base_contains('DISTRO_FEATURES', 'x11', 'x11-base', '', d)} \
 "
 
-LICENSE = "MIT"
+IMAGE_FEATURES += "read-only-rootfs package-management"
+IMAGE_INSTALL += "packagegroup-xfce-base packagegroup-core-x11 xrdb florence3 leafpad"
 
-inherit core-image
+LICENSE = "MIT"
 
 #egf-gpio
 CORE_IMAGE_EXTRA_INSTALL += " \
@@ -56,7 +59,7 @@ IMAGE_INSTALL_remove += "packagegroup-fsl-bluez5-tools \
 
 fix_readonly_image() {
 		rm ${IMAGE_ROOTFS}/etc/network/interfaces
-		ln -s /home/root/etc/network/interfaces ${IMAGE_ROOTFS}/etc/network/interfaces
+		ln -s /home/root/interfaces ${IMAGE_ROOTFS}/etc/network/interfaces
 }
 
 fix_image() {
@@ -69,14 +72,14 @@ fix_image() {
 		#rimozione calibrazione automatica all'avvio
 		#rm ${IMAGE_ROOTFS}/etc/xdg/autostart/xinput_calibrator.desktop
 
-		#attesa avvio applicativo		
-		sed -i -e '1isleep 30\' ${IMAGE_ROOTFS}/etc/X11/Xsession.d/90xXWindowManager.sh
+		#attesa avvio applicativo	???	
+		#sed -i -e '1isleep 30\' ${IMAGE_ROOTFS}/etc/X11/Xsession.d/90xXWindowManager.sh
 }
 
 
-#IMAGE_PREPROCESS_COMMAND += "fix_readonly_image"
-IMAGE_PREPROCESS_COMMAND += "fix_image"
+IMAGE_PREPROCESS_COMMAND += "fix_readonly_image;"
+IMAGE_PREPROCESS_COMMAND += "fix_image;"
 
-export IMAGE_BASENAME = "itema-console-image"
+export IMAGE_BASENAME = "itema-console-image-${GF_YOCTO_ROOTFS_VERSION}"
 
 
