@@ -1,0 +1,29 @@
+From 77755186ad2fb61e8bc0bc68684e3bd631084906 Mon Sep 17 00:00:00 2001
+From: Max Krummenacher <max.krummenacher@toradex.com>
+Date: Wed, 15 Feb 2017 00:40:27 +0100
+Subject: [PATCH] src/Makefile.am: add missing dependency
+
+Fix race condition in which libflorence is not yet ready when florence
+is linked.
+
+Upstream-Status: Pending
+
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+---
+ src/Makefile.am | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 9d5a417..d1cd944 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -11,6 +11,7 @@ if WITH_RAMBLE
+    florence_SOURCES += ramble.c
+ endif
+ 
++florence_DEPENDENCIES = ${lib_LTLIBRARIES}
+ florence_CPPFLAGS = -I$(top_srcdir) -DICONDIR="\"$(ICONDIR)\""\
+    -DFLORENCELOCALEDIR=\""$(florencelocaledir)"\"\
+    -DDATADIR="\"$(datadir)/florence\"" $(DEPS_CFLAGS) $(GTK3_CFLAGS)\
+-- 
+2.6.6
