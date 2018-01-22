@@ -17,7 +17,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     iproute2 openssh openssh-sftp-server nano i2c-tools gdb gdbserver \
     strace xserver-xorg-extension-viv-hdmi icu x11vnc \
     util-linux itema-bundle zip unzip lighttpd samba cifs-utils \
-    resolvconf evince "
+    resolvconf evince udev-extraconf"
     
 # "xf86-input-tslib tslib tslib-calibrate tslib-conf tslib-tests"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
