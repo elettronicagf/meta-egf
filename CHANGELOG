@@ -1,0 +1,7 @@
+yocto-egf-0609-001  09/02/2018
+ - Primo rilascio basato su imx-4.1.15-1.1.2
+ - la libreria mraa è ancora in versione per evb 0541
+ - Firmware modulo WiFi e BT
+ - Kernel e u-boot non inclusi da compilare esternamente
+ 
+ 
