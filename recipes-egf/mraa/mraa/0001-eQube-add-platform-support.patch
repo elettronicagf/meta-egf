@@ -1,30 +1,30 @@
-From fe8b8f5da583f3cc00d8080df52ba73142ead272 Mon Sep 17 00:00:00 2001
+From 3fa8cd44e228ec057f10fee31cb909baa701955d Mon Sep 17 00:00:00 2001
 From: Stefano Donati <stefano.donati@elettronicagf.it>
-Date: Thu, 7 Dec 2017 09:10:36 +0100
+Date: Wed, 21 Feb 2018 11:30:05 +0100
 Subject: eQube add platform support
 
 
 diff --git a/api/mraa/types.h b/api/mraa/types.h
-index 8479b76..61565e2 100644
+index e9cd4a5..09f1ae1 100644
 --- a/api/mraa/types.h
 +++ b/api/mraa/types.h
-@@ -57,6 +57,7 @@ typedef enum {
-     MRAA_PHYBOARD_WEGA = 14,        /**< The phyBOARD-Wega */
-     MRAA_DE_NANO_SOC = 15,          /**< Terasic DE-Nano-SoC Board */
+@@ -59,6 +59,7 @@ typedef enum {
      MRAA_UP2 = 16,                  /**< The UP^2 Board */
-+    MRAA_EQUBE = 18,				/**< Elettronica GF eQube Board */
+     MRAA_MTK_LINKIT = 17,           /**< Mediatek MT7688 based Linkit boards */
+     MRAA_MTK_OMEGA2 = 18,           /**< MT7688 based Onion Omega2 board */
++    MRAA_EQUBE = 19,		    /**< Elettronica GF eQube Board */
  
      // USB platform extenders start at 256
      MRAA_FTDI_FT4222 = 256,         /**< FTDI FT4222 USB to i2c bridge */
 diff --git a/api/mraa/types.hpp b/api/mraa/types.hpp
-index 1b533cb..9bdae5e 100644
+index 1b533cb..788c077 100644
 --- a/api/mraa/types.hpp
 +++ b/api/mraa/types.hpp
 @@ -55,6 +55,7 @@ typedef enum {
      PHYBOARD_WEGA = 14,        /**< The phyBOARD-Wega */
      DE_NANO_SOC = 15,          /**< Terasic DE-Nano-SoC Board */
      INTEL_UP2 = 16,            /**< The UP^2 Board */
-+    EQUBE = 18,				   /**< Elettronica GF eQube Board */
++    EQUBE = 19,				   /**< Elettronica GF eQube Board */
  
      FTDI_FT4222 = 256,         /**< FTDI FT4222 USB to i2c bridge */
  
@@ -88,17 +88,17 @@ index 0000000..8a07c9a
 +}
 +#endif
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index ed9b356..fd6da65 100644
+index 910224c..46fdff9 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -95,6 +95,7 @@ set (mraa_LIB_ARM_SRCS_NOAUTO
+@@ -96,6 +96,7 @@ set (mraa_LIB_ARM_SRCS_NOAUTO
    ${PROJECT_SOURCE_DIR}/src/arm/phyboard.c
    ${PROJECT_SOURCE_DIR}/src/arm/banana.c
    ${PROJECT_SOURCE_DIR}/src/arm/de_nano_soc.c
 +  ${PROJECT_SOURCE_DIR}/src/arm/eqube.c
  )
  
- set (mraa_LIB_MOCK_SRCS_NOAUTO
+ set (mraa_LIB_MIPS_SRCS_NOAUTO
 diff --git a/src/arm/arm.c b/src/arm/arm.c
 index 40eccf5..2ae8c7c 100644
 --- a/src/arm/arm.c

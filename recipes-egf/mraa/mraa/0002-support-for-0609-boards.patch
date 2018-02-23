@@ -1,0 +1,237 @@
+From c79bd921b3e71eefaf366efb125a8019f30b888b Mon Sep 17 00:00:00 2001
+From: Stefano Donati <stefano.donati@elettronicagf.it>
+Date: Fri, 23 Feb 2018 15:47:41 +0100
+Subject: Support for 0609 boards
+
+
+diff --git a/include/arm/eqube.h b/include/arm/eqube.h
+index 8a07c9a..e95c55b 100644
+--- a/include/arm/eqube.h
++++ b/include/arm/eqube.h
+@@ -44,7 +44,7 @@ extern "C" {
+ #define MMAP_PATH "/dev/mem"
+ #define MAX_SIZE 64
+ 
+-#define MRAA_EQUBE_PINCOUNT 41
++#define MRAA_EQUBE_PINCOUNT 200
+ 
+ mraa_board_t* mraa_eqube();
+ 
+diff --git a/src/arm/arm.c b/src/arm/arm.c
+index 2ae8c7c..c5a6810 100644
+--- a/src/arm/arm.c
++++ b/src/arm/arm.c
+@@ -77,7 +77,7 @@ mraa_arm_platform()
+                 } else if (strstr(line, "DE0/DE10-Nano-SoC")) {
+                         platform_type = MRAA_DE_NANO_SOC;
+ 				} else if (strstr(line, "i.MX6")) {
+-					if (mraa_file_contains("/proc/device-tree/model", "Elettronica GF")) {
++					if (mraa_file_contains("/proc/device-tree/model", "eQube")) {
+ 						platform_type = MRAA_EQUBE;
+ 					}
+ 				}
+diff --git a/src/arm/eqube.c b/src/arm/eqube.c
+index 45593f6..76c7c9c 100644
+--- a/src/arm/eqube.c
++++ b/src/arm/eqube.c
+@@ -112,6 +112,20 @@ void mraa_arm_pwm_pininfo(mraa_board_t* board, int index, char* fmt, ...)
+ 	pininfo->pwm.mux_total = 0;
+ }
+ 
++void mraa_arm_aio_pininfo(mraa_board_t* board, int index, char* fmt, ...)
++{
++	va_list arg_ptr;
++	if (index > board->phy_pin_count)
++		return;
++
++	mraa_pininfo_t* pininfo = &board->pins[index];
++	va_start(arg_ptr, fmt);
++	vsnprintf(pininfo->name, MRAA_PIN_NAME_SIZE, fmt, arg_ptr);
++	va_end(arg_ptr);
++	pininfo->capabilities = (mraa_pincapabilities_t){ 1, 0, 0, 0, 0, 0, 1, 0 };
++
++}
++
+ mraa_result_t mraa_eqube_uart_set_flowcontrol(mraa_uart_context dev, mraa_boolean_t xonxoff, mraa_boolean_t rtscts)
+ {
+ 	if (!dev) {
+@@ -146,6 +160,22 @@ mraa_result_t mraa_eqube_uart_set_flowcontrol(mraa_uart_context dev, mraa_boolea
+     
+ }
+ 
++mraa_result_t aio_eqube_get_valid_fp(mraa_aio_context dev)
++{
++    char file_path[64] = "";
++
++    // Open file Analog device input channel raw voltage file for reading.
++    snprintf(file_path, 64, "/sys/bus/iio/devices/iio:device0/in_voltage_raw");
++
++    dev->adc_in_fp = open(file_path, O_RDONLY);
++    if (dev->adc_in_fp == -1) {
++        printf("aio: Failed to open input raw file %s for reading!", file_path);
++        return MRAA_ERROR_INVALID_RESOURCE;
++    }
++
++    return MRAA_SUCCESS;
++}
++
+ mraa_board_t* mraa_eqube()
+ {
+ 	int i;
+@@ -176,79 +206,99 @@ mraa_board_t* mraa_eqube()
+ 	}
+ 
+ 	b->adv_func->uart_set_flowcontrol_replace = &mraa_eqube_uart_set_flowcontrol;
++	
++	b->adv_func->aio_get_valid_fp = &aio_eqube_get_valid_fp;
+ 
+-	// CN9 on 0541
++	// CN4 on 0609
+ 	mraa_arm_gpio_pininfo(b, 0, -1, "INVALID");
+-	mraa_arm_spi_pininfo(b, 4, "ECSPI3_MOSI");
+-	mraa_arm_spi_pininfo(b, 5, "ECSPI3_SCLK");
+-	mraa_arm_spi_pininfo(b, 6, "ECSPI3_SS1");
+-	mraa_arm_spi_pininfo(b, 7, "ECSPI3_SS0");
+-	mraa_arm_spi_pininfo(b, 8, "ECSPI3_MISO");
+-	mraa_arm_uart_pininfo(b, 9, "UART2_TX");
+-	mraa_arm_uart_pininfo(b, 10, "UART2_RX");
+-	mraa_arm_uart_pininfo(b, 11, "UART2_CTS");
+-	mraa_arm_uart_pininfo(b, 12, "UART2_RTS");
+-	mraa_arm_pwm_pininfo(b, 18, "PWM1_OUT");
+-	mraa_arm_gpio_pininfo(b, 19, IMX6_GPIO(6, 0), "GPIO6_IO00");
+-	mraa_arm_gpio_pininfo(b, 20, IMX6_GPIO(5, 31), "GPIO5_IO31");
+-	mraa_arm_gpio_pininfo(b, 21, IMX6_GPIO(5, 30), "GPIO5_IO30");
+-	mraa_arm_i2c_pininfo(b, 22, "I2C3_SCL");
+-	mraa_arm_i2c_pininfo(b, 23, "I2C3_SDA");
+-	mraa_arm_i2c_pininfo(b, 24, "I2C1_SCL");
+-	mraa_arm_i2c_pininfo(b, 25, "I2C1_SDA");
++	mraa_arm_gpio_pininfo(b, 3, IMX6_GPIO(4, 24), "ECSPI3-SS0_GPIO4-IO24");
++	mraa_arm_gpio_pininfo(b, 5, IMX6_GPIO(4, 21), "ECSPI3-SCLK_GPIO4-IO21");	
++	mraa_arm_gpio_pininfo(b, 6, IMX6_GPIO(4, 25), "ECSPI3-SS1_GPIO4-IO25");
++	mraa_arm_gpio_pininfo(b, 7, IMX6_GPIO(4, 23), "ECSPI3-MISO_GPIO4-IO23");
++	mraa_arm_gpio_pininfo(b, 8, IMX6_GPIO(4, 22), "ECSPI3-MOSI_GPIO4-IO22");
++	mraa_arm_uart_pininfo(b, 9, "UART1_RX");
++	mraa_arm_uart_pininfo(b, 10, "UART1_TX");
++	mraa_arm_uart_pininfo(b, 11, "UART1_RTS");
++	mraa_arm_uart_pininfo(b, 12, "UART1_CTS");
++	mraa_arm_gpio_pininfo(b, 13, IMX6_GPIO(4, 9), "UART5-RX_GPIO4-IO09");
++	mraa_arm_gpio_pininfo(b, 14, IMX6_GPIO(4, 8), "UART5-TX_GPIO4-IO08");	
++	mraa_arm_gpio_pininfo(b, 15, IMX6_GPIO(4, 14), "UART5-RTS_GPIO4-IO14");
++	mraa_arm_gpio_pininfo(b, 16, IMX6_GPIO(4, 15), "UART5-CTS_GPIO4-IO15");	
++	mraa_arm_gpio_pininfo(b, 18, IMX6_GPIO(5, 21), "LED-GPIO5-IO21");
++	mraa_arm_gpio_pininfo(b, 20, IMX6_GPIO(6, 0), "GPIO6-IO00");	
++	mraa_arm_i2c_pininfo(b, 17, "I2C3_SCL");
++	mraa_arm_i2c_pininfo(b, 19, "I2C3_SDA");
+ 
++	// Misc signals
++	mraa_arm_gpio_pininfo(b, 101, IMX6_GPIO(6, 16), "RTC-INT_GPIO6-IO16");	
++	mraa_arm_gpio_pininfo(b, 102, IMX6_GPIO(2, 11), "TEMP-ALERT_GPIO2-IO11");
++	mraa_arm_gpio_pininfo(b, 103, IMX6_GPIO(5, 20), "EEPROM-WP_GPIO5-IO20");
++	mraa_arm_gpio_pininfo(b, 104, IMX6_GPIO(1, 19), "BLE-RESET_GPIO1-IO19");
++	mraa_arm_gpio_pininfo(b, 105, IMX6_GPIO(1, 17), "BLE-EN_GPIO1-IO17");
++	mraa_arm_gpio_pininfo(b, 106, IMX6_GPIO(1, 18), "WL18XX-BT-EN_GPIO1-IO18");
++	mraa_arm_gpio_pininfo(b, 107, IMX6_GPIO(1, 7), "ADC-ALERT_GPIO1-IO07");
++	mraa_arm_gpio_pininfo(b, 108, IMX6_GPIO(5, 18), "BTN-INT_GPIO5-IO18");
++	mraa_arm_gpio_pininfo(b, 109, IMX6_GPIO(5, 19), "BTN-PBOUT_GPIO5-IO19");
++	mraa_arm_gpio_pininfo(b, 110, IMX6_GPIO(4, 31), "POWER-PRESENT");
++	mraa_arm_gpio_pininfo(b, 111, IMX6_GPIO(2, 05), "BAT-CHARGE");
++	mraa_arm_gpio_pininfo(b, 112, IMX6_GPIO(1, 21), "CHARGER-ENABLE");
++	mraa_arm_gpio_pininfo(b, 113, IMX6_GPIO(6, 11), "TEST-BUTTON");
++	mraa_arm_gpio_pininfo(b, 114, IMX6_GPIO(5, 5), "FUNCTION-BUTTON");
++	mraa_arm_gpio_pininfo(b, 115, IMX6_GPIO(7, 12), "BLE-PD14");
++	mraa_arm_gpio_pininfo(b, 116, IMX6_GPIO(4, 12), "BLE-PD15");
++	mraa_arm_pwm_pininfo(b, 117, "PWM3_OUT");
++	mraa_arm_aio_pininfo(b, 118, "VBATT");
++	mraa_arm_uart_pininfo(b, 119, "UART2_RX");
++	mraa_arm_uart_pininfo(b, 120, "UART2_TX");
++	mraa_arm_uart_pininfo(b, 121, "UART2_RTS");
++	mraa_arm_uart_pininfo(b, 122, "UART2_CTS");
++	
++	//AIN
++	b->aio_count = 1;
++    b->adc_raw = 10;
++	b->aio_non_seq = 1;
++    b->aio_dev[0].pin = 118;
++	
+ 	// I2C BUS DEFINITIONS
+-    b->i2c_bus_count = 2;
++    b->i2c_bus_count = 1;
+     b->def_i2c_bus = 0;
+-	//I2C1
+-	b->i2c_bus[0].name = "I2C1";
+-    b->i2c_bus[0].bus_id = 0;
+-    b->i2c_bus[0].sda = 25;
+-    b->i2c_bus[0].scl = 24;
+ 	//I2C3
+-	b->i2c_bus[1].name = "I2C3";
+-    b->i2c_bus[1].bus_id = 2;
+-    b->i2c_bus[1].sda = 23;
+-    b->i2c_bus[1].scl = 22;
++	b->i2c_bus[0].name = "I2C3";
++    b->i2c_bus[0].bus_id = 2;
++    b->i2c_bus[0].sda = 19;
++    b->i2c_bus[0].scl = 17;
+ 	
+ 	//UART BUS DEFINITIONS
+-	b->uart_dev_count = 1;
++	b->uart_dev_count = 2;
+ 	b->def_uart_dev = 1;
+-	//UART2
+-	b->uart_dev[0].device_path = "/dev/ttymxc1";
+-	b->uart_dev[0].name = "UART2";
+-	b->uart_dev[0].index = 1;
+-	b->uart_dev[0].rx = 10;
+-    b->uart_dev[0].tx = 9;
+-	b->uart_dev[0].rts = 12;
+-    b->uart_dev[0].cts = 11;
++	//UART1
++	b->uart_dev[0].device_path = "/dev/ttymxc0";
++	b->uart_dev[0].name = "UART1";
++	b->uart_dev[0].index = 0;
++	b->uart_dev[0].rx = 9;
++    b->uart_dev[0].tx = 10;
++	b->uart_dev[0].rts = 11;
++    b->uart_dev[0].cts = 12;
++    //UART2
++	b->uart_dev[1].device_path = "/dev/ttymxc1";
++	b->uart_dev[1].name = "UART2";
++	b->uart_dev[1].index = 1;
++	b->uart_dev[1].rx = 119;
++    b->uart_dev[1].tx = 120;
++	b->uart_dev[1].rts = 121;
++    b->uart_dev[1].cts = 122;
+ 	
+ 	//SPI BUS DEFINITIONS
+-	b->spi_bus_count = 2;
++	b->spi_bus_count = 0;
+     b->def_spi_bus = 0;
+-    //SPIDEV2.0
+-    b->spi_bus[0].bus_id = 2;
+-    b->spi_bus[0].slave_s = 0;
+-    b->spi_bus[0].name = "ECSPI3 SS0";
+-    b->spi_bus[0].cs = 7;
+-    b->spi_bus[0].mosi = 4;
+-    b->spi_bus[0].miso = 8;
+-    b->spi_bus[0].sclk = 5;
+-	//SPIDEV2.1
+-    b->spi_bus[1].bus_id = 2;
+-    b->spi_bus[1].slave_s = 1;
+-    b->spi_bus[0].name = "ECSPI3 SS1";
+-    b->spi_bus[1].cs = 6;
+-    b->spi_bus[1].mosi = 4;
+-    b->spi_bus[1].miso = 8;
+-    b->spi_bus[1].sclk = 5;
+-	
++
+ 	//PWM
+ 	b->pwm_default_period = 500;
+     b->pwm_max_period = 2147483;
+     b->pwm_min_period = 1;
+-	b->pins[18].pwm.pinmap = 0;
+-	b->pins[18].pwm.mux_total = 0;
++    b->pwm_dev[0].index = 0;
++	b->pins[117].pwm.pinmap = 0;
++	b->pins[117].pwm.mux_total = 0;
+ 	
+ 	b->gpio_count = 0;
+ 	

@@ -4,10 +4,11 @@ require mraa.inc
 SRC_URI = "git://github.com/intel-iot-devkit/mraa.git"
 SRC_URI += "\
     file://0001-eQube-add-platform-support.patch \
+    file://0002-support-for-0609-boards.patch \
 "
 
-PV = "1.8.0+gitr${SRCPV}"
-SRCREV = "eb7238d9afea044701dba1c26cc5076854e3238c"
+PV = "1.9.0+gitr${SRCPV}"
+SRCREV = "fbb7d9232067eac3f4508a37a8f7ea0c4fcebacb"
 
 S = "${WORKDIR}/git"
 

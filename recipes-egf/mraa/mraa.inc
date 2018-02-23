@@ -3,7 +3,7 @@ SECTION = "libs"
 AUTHOR = "Brendan Le Foll, Tom Ingleby"
 
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://COPYING;md5=66493d54e65bfc12c7983ff2e884f37f"
+LIC_FILES_CHKSUM = "file://COPYING;md5=4b92a3b497d7943042a6db40c088c3f2"
 
 S = "${WORKDIR}/git"
 
