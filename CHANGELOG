@@ -1,3 +1,8 @@
+yocto-egf-0609-002  23/02/2018
+ - libreria mraa aggiornata per scheda 0609
+ - Aggiornata egf-wireless-wl18xx con configurazione per modulo WL1831 inserito su scheda 0609
+ - Aggiornata documentazione con istruzioni per scheda 0609
+ 
 yocto-egf-0609-001  09/02/2018
  - Primo rilascio basato su imx-4.1.15-1.1.2
  - la libreria mraa è ancora in versione per evb 0541
