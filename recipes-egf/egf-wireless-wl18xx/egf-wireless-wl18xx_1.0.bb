@@ -17,4 +17,5 @@ INSANE_SKIP_${PN} = "ldflags"
 do_install_append () {
 		mkdir -p ${D}/home/root/firmware/ti-connectivity		
         cp -av ${WORKDIR}/ti-connectivity/*	${D}/home/root/firmware/ti-connectivity/
+        chown root:root ${D}/home/root/firmware/ti-connectivity/*
 }
