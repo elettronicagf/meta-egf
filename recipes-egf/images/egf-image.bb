@@ -6,7 +6,7 @@ LICENSE = "MIT"
 inherit core-image
 inherit populate_sdk
 
-GF_YOCTO_ROOTFS_VERSION = "1.0"
+GF_YOCTO_ROOTFS_VERSION = "2.0"
 
 IMAGE_FEATURES += "${@base_contains('DISTRO_FEATURES', 'x11', \
                             ' x11-base x11-sato hwcodecs', '', d)}"
