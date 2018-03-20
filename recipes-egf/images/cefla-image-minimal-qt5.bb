@@ -48,7 +48,4 @@ IMAGE_INSTALL += "qtbase \
 
 CONFLICT_DISTRO_FEATURES = "directfb"
 
-IMAGE_FSTYPES = "tar.bz2 ubi"
-UBINIZE_ARGS = " -m 2048 -p 128KiB -s 2048 "
-MKUBIFS_ARGS = " -c 1600 -e 126976 -m 2KiB -F"
-UBI_VOLNAME = "rootfs"
+IMAGE_FSTYPES = "tar.bz2"
