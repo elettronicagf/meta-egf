@@ -1,0 +1,103 @@
+#!/bin/sh
+
+error() {
+	echo -e '\E[1;31m'$1'\E[0m'
+	echo " "
+        exit 1	
+}
+
+usage() {
+	echo "Usage: $0 [enable | disable | completed]"
+        echo "enable: Mark update as enabled (will be executed at next boot)"
+	echo "disable: Mark update as disabled (will not be executed)"
+	echo "completed: Mark update as successfully completed"
+	exit 1
+}
+
+get_mtd_dev_type() {
+ local INFO;
+ INFO=$(mtdinfo /dev/$1 | grep Type)
+ echo ${INFO#"Type:"}
+}
+
+get_mtd_name() {
+ local INFO;
+ INFO=$(mtdinfo /dev/$1 | grep Name)
+ echo ${INFO#"Name:"}
+}
+
+EGF_UPDATE_MTD_PART_NAME="UPDATE DATA"
+TMP_DIR=/run/tmp
+NOR_GPIO_WP="90"
+NOR_GPIO_WP_UNLOCKED_LEVEL="1"
+NOR_GPIO_WP_LOCKED_LEVEL="0"
+
+if [ $# -ne 1 ]; then
+	usage
+fi
+
+if [ "$1" != "enable" ] && [ "$1" != "disable" ] && [ "$1" != "completed" ]; then
+	usage
+fi
+
+
+mkdir -p $TMP_DIR
+#Find UPDATE DATA partition on SPINOR
+MTD_INFO=$(mtdinfo | grep "Present MTD")
+MTD_DEVICES=${MTD_INFO#"Present MTD devices:"}
+MTD_DEVICES_LIST=$(echo $MTD_DEVICES | awk -F, '{for (i=1;i<=NF;i++)print $i}')
+
+UPDATE_MTD_DEV=" "
+
+for MTD_DEV in $MTD_DEVICES_LIST; do
+	MTD_DEV_TYPE=$(get_mtd_dev_type $MTD_DEV)
+	if [ "$MTD_DEV_TYPE" = "nor" ]; then
+		MTD_DEV_NAME=$(get_mtd_name $MTD_DEV)
+		if [ "$MTD_DEV_NAME" = "$EGF_UPDATE_MTD_PART_NAME" ]; then
+			UPDATE_MTD_DEV=$MTD_DEV
+			break
+		fi 
+	else
+		continue
+	fi   	
+done;
+
+if [ "$UPDATE_MTD_DEV" = " " ]; then
+	error "Update data partition not found!"
+fi
+
+case "$1" in
+	enable)
+		echo -n -e '\x65\x47\x46\x0\x0\x0\x0\x0' > $TMP_DIR/tmp
+		;;
+	disable)
+		echo -n -e '\x65\x47\x46\x0\xfe\x0\x0\x0' > $TMP_DIR/tmp
+		;;
+	completed)
+		echo -n	-e '\x65\x47\x46\x0\xff\x0\x0\x0' > $TMP_DIR/tmp
+		;;
+	*)
+		error "Invalid command"
+		;;
+esac
+
+#Unlock NOR
+if [ ! -e /sys/class/gpio/gpio$NOR_GPIO_WP ]; then
+	echo $NOR_GPIO_WP > /sys/class/gpio/export
+fi
+echo out > /sys/class/gpio/gpio$NOR_GPIO_WP/direction
+echo $NOR_GPIO_WP_UNLOCKED_LEVEL > /sys/class/gpio/gpio$NOR_GPIO_WP/value
+
+flash_unlock /dev/$UPDATE_MTD_DEV
+flashcp $TMP_DIR/tmp /dev/$UPDATE_MTD_DEV 
+
+if [ $? -ne 0 ]; then
+	error_handler "Error while writing update data on NOR"
+fi
+	
+
+#Lock Back NOR
+flash_lock /dev/$UPDATE_MTD_DEV
+echo $NOR_GPIO_WP_LOCKED_LEVEL > /sys/class/gpio/gpio$NOR_GPIO_WP/value
+
+exit 0
