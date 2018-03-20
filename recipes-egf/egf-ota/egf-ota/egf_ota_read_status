@@ -1,0 +1,75 @@
+#!/bin/sh
+
+error() {
+	echo -e '\E[1;31m'$1'\E[0m'
+	echo " "
+        exit 1	
+}
+
+usage() {
+	echo "Usage: $0"
+	exit 1
+}
+
+get_mtd_dev_type() {
+ local INFO;
+ INFO=$(mtdinfo /dev/$1 | grep Type)
+ echo ${INFO#"Type:"}
+}
+
+get_mtd_name() {
+ local INFO;
+ INFO=$(mtdinfo /dev/$1 | grep Name)
+ echo ${INFO#"Name:"}
+}
+
+EGF_UPDATE_MTD_PART_NAME="UPDATE DATA"
+
+if [ $# -ne 0 ]; then
+	usage
+fi
+
+#Find UPDATE DATA partition on SPINOR
+MTD_INFO=$(mtdinfo | grep "Present MTD")
+MTD_DEVICES=${MTD_INFO#"Present MTD devices:"}
+MTD_DEVICES_LIST=$(echo $MTD_DEVICES | awk -F, '{for (i=1;i<=NF;i++)print $i}')
+
+UPDATE_MTD_DEV=" "
+
+for MTD_DEV in $MTD_DEVICES_LIST; do
+	MTD_DEV_TYPE=$(get_mtd_dev_type $MTD_DEV)
+	if [ "$MTD_DEV_TYPE" = "nor" ]; then
+		MTD_DEV_NAME=$(get_mtd_name $MTD_DEV)
+		if [ "$MTD_DEV_NAME" = "$EGF_UPDATE_MTD_PART_NAME" ]; then
+			UPDATE_MTD_DEV=$MTD_DEV
+			break
+		fi 
+	else
+		continue
+	fi   	
+done;
+
+if [ "$UPDATE_MTD_DEV" = " " ]; then
+	error "Update data partition not found!"
+fi
+
+VALUE=$(dd if=/dev/$UPDATE_MTD_DEV bs=1 count=1 skip=4 2>/dev/null | hexdump -n1 -s0 -v -e '1/1 "%u"')
+
+echo "Status value is $VALUE"
+
+case "$VALUE" in
+	0 | 1 | 2 | 3 | 4)
+		echo "Update is enabled. Installation retries $VALUE"
+		;;
+	254)
+		echo "Update is disabled"
+		;;
+	255)
+		echo "Update is successfully installed"
+		;;
+	*)
+		echo "Unknown status"
+		;;
+esac 
+
+exit 0
