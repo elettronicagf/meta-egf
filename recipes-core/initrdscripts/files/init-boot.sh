@@ -73,6 +73,31 @@ get_available_devs_for_update () {
 	echo $AVAILABLE_DEVS;
 }
 
+#$1 is update dev mount path, $2 is update log file prefix
+get_first_free_log_name () {
+local logfilelist;
+local progr;
+local log_number;
+local max;
+logfilelist=$(ls $1 | grep $2);
+max=0;
+for logfile in $logfilelist; do
+	if [ ${#logfile} -lt 22 ]; then
+		continue;
+	fi;
+	progr=${logfile#$2}
+	log_number=$(expr $progr + 0 2>/dev/null) 
+	if [ "$?" -ne 0 ]; then
+		continue;
+	fi
+	if [ "$log_number" -gt "$max" ]; then
+		max=$log_number;
+	fi;
+done;
+max=$(expr $max + 1)
+echo "$2$max"
+}
+
 mkdir /proc
 mkdir /sys
 mount -t proc proc /proc
@@ -94,9 +119,9 @@ echo "-------------------------eGF update system-------------------------"
 echo "-------------------------------------------------------------------"
 
 SN=$(get_sn_from_cmdline)
-NRAND=$(shuf -i 1-65000 -n1)
-LOG_FILE_NAME=update-log-$SN-$NRAND
+LOG_FILE_NAME=" "
 LOG_FILE_PATH=" "
+UPDATE_TAR_OFFSET="16777253"
 
 # Retrieve update type and md5 from command line
 MD5=$(get_update_md5_from_cmdline)
@@ -135,6 +160,7 @@ for dev in $AVAILABLE_DEVS; do
 	if [ "$HEADER" = "eGF1" ] && [ "$FILEMD5SUM" = $MD5 ]; then
 		message "Found update media $dev";
 		UPDATE_PATH=$PATH_TO_TRY;
+		LOG_FILE_NAME=$(get_first_free_log_name /run/media/$dev/ update-log-$SN-)
 		export LOG_FILE_PATH=/run/media/$dev/$LOG_FILE_NAME
 		break;
 	fi;
@@ -158,7 +184,7 @@ fi;
 
 #Extract setup.sh script
 message "Extracting setup.sh script from update package"
-tail -c +16777253 $UPDATE_PATH | openssl enc -aes-256-cbc -d -pass pass:$PASSWORD 2> /dev/null | tar xm --occurrence=1 -C / setup.sh
+tail -c +$UPDATE_TAR_OFFSET $UPDATE_PATH | openssl enc -aes-256-cbc -d -pass pass:$PASSWORD 2> /dev/null | tar xm --occurrence=1 -C / setup.sh
 
 if [ $? -ne 0 ]; then
   error_handler "Unable to extract setup.sh script from update package"
@@ -175,7 +201,8 @@ else
 	message "Update succesfully terminated"
 	if [ "$IS_OTA_UPDATE" = "true" ]; then
 		egf_ota_write_status completed
-		reboot
+		sync
+		reboot -f
 	fi
 fi
 
