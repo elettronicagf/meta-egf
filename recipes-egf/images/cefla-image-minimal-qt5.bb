@@ -42,8 +42,11 @@ IMAGE_INSTALL += "qtbase \
                   qtbase-plugins \
                   qtdeclarative \
                   qtsvg \
+                  qtwebsockets \
+                  qtgraphicaleffects-qmlplugins \
                   packagegroup-qt5-webengine \
                   packagegroup-fsl-gstreamer1.0-full \
+                  cifs-utils \
 "
 
 CONFLICT_DISTRO_FEATURES = "directfb"
