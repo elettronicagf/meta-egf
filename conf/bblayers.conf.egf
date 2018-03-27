@@ -33,4 +33,4 @@ BBLAYERS += " ${BSPDIR}/sources/meta-fsl-bsp-release/imx/meta-fsl-bluez "
 
 ##Elettronica GF Layer
 BBLAYERS += " ${BSPDIR}/sources/meta-egf "
-
+BBLAYERS += " ${BSPDIR}/sources/meta-openembedded/meta-xfce "
