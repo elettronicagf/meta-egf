@@ -81,4 +81,7 @@ IMAGE_INSTALL += " \
 ${QT5_IMAGE_INSTALL} \
 "
 
-IMAGE_FSTYPES = "tar.bz2"
+IMAGE_FSTYPES = "tar.bz2 ubi"
+UBINIZE_ARGS = " -m 2048 -p 128KiB -s 2048 "
+MKUBIFS_ARGS = " -c 2400 -e 126976 -m 2KiB -F"
+UBI_VOLNAME = "rootfs"
