@@ -63,7 +63,7 @@ error_handler() {
 	exec sh
 }
 
-get_available_devs_for_update () {
+get_available_devs_for_update() {
 	local AVAILABLE_DEVS=" "
 	local AVAILABLE_DEVS_SDIO=" "
 	local AVAILABLE_DEVS_USB=" "
@@ -143,27 +143,35 @@ fi;
 # md5 written on package header must be equal to the one passed
 # in cmdline from bootloader
 message "Searching for storage devices..."
-AVAILABLE_DEVS=$(get_available_devs_for_update)
-if [ "$AVAILABLE_DEVS" = " " ]; then
-	error_handler "No available devices for update found";
-fi;
 
 UPDATE_PATH=" "
 
-for dev in $AVAILABLE_DEVS; do
-	if [ ! -e /run/media/$dev/update.eup ]; then
+for i in 1 2 3 4 5
+do
+	message "Searching update package, try $i"
+
+	AVAILABLE_DEVS=$(get_available_devs_for_update)
+	if [ "$AVAILABLE_DEVS" = " " ]; then
+		message "No update devices found"
+		sleep 2;
 		continue;
 	fi;
-	PATH_TO_TRY=/run/media/$dev/update.eup
-	HEADER=$(dd if=$PATH_TO_TRY bs=1 count=4 2>/dev/null)
-	FILEMD5SUM=$(dd if=$PATH_TO_TRY bs=1 count=32 skip=4 2>/dev/null)
-	if [ "$HEADER" = "eGF1" ] && [ "$FILEMD5SUM" = $MD5 ]; then
-		message "Found update media $dev";
-		UPDATE_PATH=$PATH_TO_TRY;
-		LOG_FILE_NAME=$(get_first_free_log_name /run/media/$dev/ update-log-$SN-)
-		export LOG_FILE_PATH=/run/media/$dev/$LOG_FILE_NAME
-		break;
-	fi;
+
+	for dev in $AVAILABLE_DEVS; do
+		if [ -e /run/media/$dev/update.eup ]; then
+			PATH_TO_TRY=/run/media/$dev/update.eup
+			HEADER=$(dd if=$PATH_TO_TRY bs=1 count=4 2>/dev/null)
+			FILEMD5SUM=$(dd if=$PATH_TO_TRY bs=1 count=32 skip=4 2>/dev/null)
+			if [ "$HEADER" = "eGF1" ] && [ "$FILEMD5SUM" = $MD5 ]; then
+				message "Found update media $dev";
+				UPDATE_PATH=$PATH_TO_TRY;
+				LOG_FILE_NAME=$(get_first_free_log_name /run/media/$dev/ update-log-$SN-)
+				export LOG_FILE_PATH=/run/media/$dev/$LOG_FILE_NAME
+				break 2;
+			fi;
+		fi;
+	done;
+	sleep 2;
 done;
 
 if [ "$UPDATE_PATH" = " " ]; then
