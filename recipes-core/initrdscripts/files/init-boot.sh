@@ -32,18 +32,6 @@ get_update_md5_from_cmdline () {
 	echo $MD5;
 }
 
-is_ota_update() {
-	local CMDLINE=$(cat /proc/cmdline)
-	local IS_OTA="false"
-	for i in $CMDLINE; do
-		if [ "$i" = "otaupdate" ]; then
-			IS_OTA="true"
-			break;
-		fi;
-	done;
-	echo $IS_OTA;
-}
-
 message() {
 	echo "##### $1 #####"
 	if [ "$LOG_FILE_PATH" != " " ]; then
@@ -54,22 +42,13 @@ message() {
 
 error_handler() {
 	message "Error: $1"
-	local IS_OTA_UPDATE=$(is_ota_update)
-	if [ "$IS_OTA_UPDATE" = "true" ]; then
-		message "Disabling OTA update"
-		egf_ota_write_status disable;
-	fi
 	echo >$CONSOLE
 	exec sh
 }
 
 get_available_devs_for_update() {
 	local AVAILABLE_DEVS=" "
-	local AVAILABLE_DEVS_SDIO=" "
-	local AVAILABLE_DEVS_USB=" "
-	AVAILABLE_DEVS_SDIO=$(ls /run/media | grep mmcblk);
-	AVAILABLE_DEVS_USB=$(ls /run/media | grep sd);
-	AVAILABLE_DEVS="$AVAILABLE_DEVS_SDIO $AVAILABLE_DEVS_USB"
+	AVAILABLE_DEVS=$(ls /run/media | grep sd);
 	echo $AVAILABLE_DEVS;
 }
 
@@ -126,20 +105,15 @@ UPDATE_TAR_OFFSET="16777253"
 # Retrieve update type and md5 from command line
 MD5=$(get_update_md5_from_cmdline)
 message "md5 read from cmdline is $MD5"
-IS_OTA_UPDATE=$(is_ota_update)
-if [ "$IS_OTA_UPDATE" = "true" ]; then
-	message "Installing OTA update"
-else
-	message "Installing Non-OTA update"
-fi
+
+message "Installing update"
 
 if [ "$MD5" = " " ]; then
 	error_handler "Missing update md5 parameter from cmdline";
 fi;
 
 # Search for update package
-# Update package is searched on USB if update type is usb or
-# on mmcblk devices if update type is OTA
+# Update package is searched on USB if update type is usb
 # md5 written on package header must be equal to the one passed
 # in cmdline from bootloader
 message "Searching for storage devices..."
@@ -207,11 +181,6 @@ if [ $? -ne 0 ]; then
 	error_handler "Script setup.sh terminated with errors"
 else
 	message "Update succesfully terminated"
-	if [ "$IS_OTA_UPDATE" = "true" ]; then
-		egf_ota_write_status completed
-		sync
-		reboot -f
-	fi
 fi
 
 echo >$CONSOLE
