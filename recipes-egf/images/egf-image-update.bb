@@ -1,5 +1,6 @@
 LICENSE = "MIT"
-PACKAGE_INSTALL = "initramfs-boot   busybox udev base-passwd udev-extraconf dosfstools e2fsprogs mtd-utils"
+PACKAGE_INSTALL = "initramfs-boot   busybox udev base-passwd udev-extraconf dosfstools e2fsprogs mtd-utils openssl tar bzip2 "
+
 
 export IMAGE_BASENAME = "core-image-minimal-initramfs"
 IMAGE_LINGUAS = ""
