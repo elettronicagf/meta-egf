@@ -1,6 +1,6 @@
 #!/bin/sh
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
-PASSWORD='47382e)9[xh?'
+PASSWORD='12kjh8dfs[324'
 
 get_sn_from_cmdline () {
 	local CMDLINE=$(cat /proc/cmdline)
