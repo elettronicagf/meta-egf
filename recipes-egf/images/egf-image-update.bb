@@ -1,7 +1,7 @@
 LICENSE = "MIT"
 PACKAGE_INSTALL = "initramfs-boot busybox udev base-passwd udev-extraconf dosfstools e2fsprogs openssl tar bzip2 egf-ota "
 
-GF_YOCTO_ROOTFS_LIVE_VERSION = "2.2"
+GF_YOCTO_ROOTFS_LIVE_VERSION = "1.0"
 
 IMAGE_LINGUAS = ""
 
