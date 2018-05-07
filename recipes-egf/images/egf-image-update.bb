@@ -9,6 +9,8 @@ IMAGE_LINGUAS = ""
 IMAGE_FSTYPES = "${INITRAMFS_FSTYPES}"
 inherit core-image
 
+GF_YOCTO_ROOTFS_LIVE_VERSION = "1.1"
+
 IMAGE_ROOTFS_SIZE = "8192"
 
 #tslib tslib-calibrate tslib-conf tslib-tests 
@@ -32,3 +34,5 @@ write_version () {
 IMAGE_PREPROCESS_COMMAND += "write_version"
 
 BAD_RECOMMENDATIONS += "busybox-syslog"
+
+export IMAGE_BASENAME = "0508faeimx6qdl-${GF_YOCTO_ROOTFS_LIVE_VERSION}-yocto-rootfs-live"
