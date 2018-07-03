@@ -1493,7 +1493,7 @@ index 0000000..0aa0bbc
 +	_IMG_HEIGHT,
 +	_IMG_BYTES_PER_PIXEL,
 +	303,
-+	190,
++	193,
 +	{ 0x00, 0x00, 0x00 },
 +	{ 0x00, 0x00, 0x00 },
 +	_IMG_RLE_PIXEL_EMPTY_DATA,
