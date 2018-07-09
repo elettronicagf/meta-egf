@@ -13,7 +13,7 @@ IMAGE_ROOTFS_SIZE = "8192"
 IMAGE_INSTALL_remove += "packagegroup-fsl-bluez5-tools"
 IMAGE_INSTALL_remove += "packagegroup-fsl-tools-gpu"
 
-PACKAGE_INSTALL += " mtd-utils mtd-utils-ubifs unzip nano util-linux egf-gpio egf-accelerometer-orientation"
+PACKAGE_INSTALL += " mtd-utils mtd-utils-ubifs unzip nano util-linux egf-gpio libstdc++"
 
 write_version () {
 #scrittura versione su filesystem
