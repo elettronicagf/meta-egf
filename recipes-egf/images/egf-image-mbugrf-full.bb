@@ -1,4 +1,4 @@
-DESCRIPTION = "eGF Image"
+DESCRIPTION = "eGF Image MBUGRF Full"
 
 GF_YOCTO_ROOTFS_VERSION = "1.0"
 
@@ -31,23 +31,23 @@ IMAGE_FEATURES += "\
 "
 
 IMAGE_INSTALL += " \
-    opkg-utils minicom opkg mc egf-gpio canutils iproute2 \
+    opkg-utils minicom opkg mc egf-gpio \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
-    mtd-utils mtd-utils-ubifs udev-extraconf egf-ota \
+    mtd-utils udev-extraconf egf-ota hplip cups \
 "
 
 IMAGE_INSTALL += "qtbase \
-                  qtbase-fonts \
                   qtbase-tools \
                   qtbase-plugins \
                   qtdeclarative \
+                  qtquickcontrols2 \
                   qtsvg \
-                  qtwebsockets \
                   qtgraphicaleffects-qmlplugins \
-                  packagegroup-qt5-webengine \
                   packagegroup-fsl-gstreamer1.0-full \
                   cifs-utils \
 "
+
+IMAGE_INSTALL_remove = "gstreamer1.0-plugins-bad-qt"
 
 CONFLICT_DISTRO_FEATURES = "directfb"
 
