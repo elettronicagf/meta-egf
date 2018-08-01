@@ -28,3 +28,5 @@ write_version () {
 IMAGE_PREPROCESS_COMMAND += "write_version"
 
 BAD_RECOMMENDATIONS += "busybox-syslog"
+
+export IMAGE_LINK_NAME = "${MACHINE}-${GF_YOCTO_ROOTFS_LIVE_VERSION}-live"
