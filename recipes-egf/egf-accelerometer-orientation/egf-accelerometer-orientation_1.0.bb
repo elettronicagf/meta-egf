@@ -2,7 +2,7 @@ SUMMARY = "Tool for reading accelerometer orientation"
 DESCRIPTION = "Tool for reading accelerometer orientation"
 SECTION = "base"
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://${WORKDIR}/main.c;md5=520601b4e7bce6a8ee64550fa2c22118"
+LIC_FILES_CHKSUM = "file://${WORKDIR}/main.c;md5=4a800036273fd8330015d4b93cd634d4"
 PR = "r1"
 
 SRC_URI = 	"file://main.c \

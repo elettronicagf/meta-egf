@@ -34,7 +34,7 @@ void readAccelerometer(int accelerometerFd)
 int main(int argc, char **argv) {
 	int mAccelerometerFD;
 
-	mAccelerometerFD = open("/dev/i2c-1", O_RDWR);
+	mAccelerometerFD = open("/dev/i2c-0", O_RDWR);
 	if(mAccelerometerFD >= 0){
 		int ret;
 		if (ioctl(mAccelerometerFD, I2C_SLAVE_FORCE, 0x1d) < 0) {
