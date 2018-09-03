@@ -28,7 +28,7 @@ get_mtd_name() {
 
 EGF_UPDATE_MTD_PART_NAME="UPDATE DATA"
 TMP_DIR=/run/tmp
-NOR_GPIO_WP="90"
+NOR_GPIO_WP="112"
 NOR_GPIO_WP_UNLOCKED_LEVEL="1"
 NOR_GPIO_WP_LOCKED_LEVEL="0"
 
@@ -92,7 +92,7 @@ flash_unlock /dev/$UPDATE_MTD_DEV
 flashcp $TMP_DIR/tmp /dev/$UPDATE_MTD_DEV 
 
 if [ $? -ne 0 ]; then
-	error_handler "Error while writing update data on NOR"
+	error "Error while writing update data on NOR"
 fi
 	
 
