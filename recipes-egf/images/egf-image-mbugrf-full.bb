@@ -1,39 +1,34 @@
-DESCRIPTION = "eGF Image MBUGRF Full"
+DESCRIPTION = "MBUGRF2018 Image Full"
 
-GF_YOCTO_ROOTFS_VERSION = "1.0"
+GF_YOCTO_ROOTFS_VERSION = "2.0"
 
 inherit core-image
 
 ## Select Image Features
-IMAGExx_FEATURES += " \
+IMAGE_FEATURES += " \
     splash \
     hwcodecs \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', '', \
-       bb.utils.contains('DISTRO_FEATURES',     'x11', 'x11-base x11-sato', \
-                                                       '', d), d)} \
 "
-#debug-tweaks 
 
-CORExx_IMAGE_EXTRA_INSTALL += " \
+CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-core-full-cmdline \
-    packagegroup-fsl-tools-gpu \
-    packagegroup-fsl-tools-gpu-external \
     packagegroup-fsl-gstreamer1.0 \
     packagegroup-fsl-gstreamer1.0-full \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'weston-init', '', d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland xterm', '', d)} \
 "
+#packagegroup-fsl-tools-gpu
+#packagegroup-fsl-tools-gpu-external
 
 IMAGE_FEATURES += "\
 	package-management \
 	read-only-rootfs \
-	x11-base \
+	x11-base x11-sato \
 "
 
 IMAGE_INSTALL += " \
     opkg-utils minicom opkg mc egf-gpio \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
-    mtd-utils udev-extraconf egf-ota hplip cups \
+    mtd-utils udev-extraconf egf-ota  \
+    cups cups-filters ghostscript hplip hplip-cups hplip-ppd hplip-backend hplip-hal hplip-filter \
 "
 
 IMAGE_INSTALL += "qtbase \
@@ -43,7 +38,6 @@ IMAGE_INSTALL += "qtbase \
                   qtquickcontrols2 \
                   qtsvg \
                   qtgraphicaleffects-qmlplugins \
-                  packagegroup-fsl-gstreamer1.0-full \
                   cifs-utils \
 "
 
@@ -52,4 +46,8 @@ IMAGE_INSTALL_remove = "gstreamer1.0-plugins-bad-qt"
 CONFLICT_DISTRO_FEATURES = "directfb"
 
 IMAGE_FSTYPES = "tar.bz2"
+
+export IMAGE_BASENAME = "0510mbugrfimx6-full-${GF_YOCTO_ROOTFS_VERSION}"
+export IMAGE_NAME = "${IMAGE_BASENAME}-${DATETIME}"
+export IMAGE_LINK_NAME = "${IMAGE_BASENAME}"
 
