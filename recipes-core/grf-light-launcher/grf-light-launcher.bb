@@ -2,7 +2,7 @@ SUMMARY = "grf launcher scripts for mbugrf light"
 DESCRIPTION = "Installs grf launcher scripts"
 SECTION = "base"
 LICENSE = "GPLv2+"
-LIC_FILES_CHKSUM = "file://${WORKDIR}/launchgrf.sh;md5=c5c0f878e27aac8c608c25fff34da744"
+LIC_FILES_CHKSUM = "file://${WORKDIR}/launchgrf.sh;md5=1c720e0716e393d5872ce67d63e55fda"
 PV = "1.0"
 PR = "r1"
 
