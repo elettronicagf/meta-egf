@@ -1,6 +1,6 @@
 DESCRIPTION = "MBUGRF2018 Image Full"
 
-GF_YOCTO_ROOTFS_VERSION = "2.0"
+GF_YOCTO_ROOTFS_VERSION = "3.0"
 
 inherit core-image
 
