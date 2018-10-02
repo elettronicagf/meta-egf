@@ -29,6 +29,7 @@ IMAGE_INSTALL += " \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
     mtd-utils udev-extraconf egf-ota  \
     cups cups-filters ghostscript hplip hplip-cups hplip-ppd hplip-backend hplip-hal hplip-filter \
+    grf-light-launcher x11vnc \
 "
 
 IMAGE_INSTALL += "qtbase \
