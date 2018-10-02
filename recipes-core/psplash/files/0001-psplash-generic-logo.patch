@@ -1488,7 +1488,7 @@ index 0000000..0aa0bbc
 +
 +static PSplashBrandInfo	BrandInfo_Generic = {
 +	0,
-+	0,
++	-1,
 +	_IMG_WIDTH,
 +	_IMG_HEIGHT,
 +	_IMG_BYTES_PER_PIXEL,
