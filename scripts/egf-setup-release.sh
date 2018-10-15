@@ -10,7 +10,7 @@ fi
 
 source ./fsl-setup-release.sh "$@"
 
-echo "BBLAYERS += \" \${BSPDIR}/sources/meta-egf \"" >> $BUILD_DIR/conf/bblayers.conf
+echo "BBLAYERS += \" \${BSPDIR}/sources/meta-cefla \"" >> $BUILD_DIR/conf/bblayers.conf
 
 if [ $(hostname) = "androidbuilder" ]; then
 
