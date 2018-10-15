@@ -27,3 +27,6 @@ echo TMPDIR = $TMPDIR >> ./conf/local.conf
 fi
 
 echo "PACKAGE_CLASSES = \"package_ipk\"" >> $BUILD_DIR/conf/local.conf
+echo "PACKAGECONFIG_append_pn-qtbase = \" fontconfig\"" >> $BUILD_DIR/conf/local.conf
+echo "PACKAGECONFIG_append_pn-qtbase = \" accessibility\"" >> $BUILD_DIR/conf/local.conf
+
