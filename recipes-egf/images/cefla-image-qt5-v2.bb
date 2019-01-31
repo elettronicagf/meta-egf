@@ -30,7 +30,7 @@ IMAGE_FEATURES += "\
 
 IMAGE_INSTALL += " \
     opkg-utils minicom opkg mc egf-gpio canutils iproute2 \
-    openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
+    openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver psplash \
     mtd-utils mtd-utils-ubifs udev-extraconf  egf-ota egf-accelerometer-orientation \
 "
 
