@@ -1,1 +1,0 @@
-xinput set-int-prop "AR1020 Touchscreen" "Evdev Axis Calibration" 32 3946 200 3906 180; xinput set-int-prop "AR1020 Touchscreen" "Evdev Axes Swap" 8 1;
