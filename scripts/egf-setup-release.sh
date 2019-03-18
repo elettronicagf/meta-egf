@@ -28,4 +28,4 @@ fi
 
 echo "PACKAGE_CLASSES = \"package_ipk\"" >> $BUILD_DIR/conf/local.conf
 echo "INHERIT += \"rm_work\"" >> $BUILD_DIR/conf/local.conf
-echo "IMAGE_FSTYPES_remove = \"sdcard\"" >> $BUILD_DIR/conf/local.conf
+echo "IMAGE_FSTYPES_remove = \"sdcard ext4\"" >> $BUILD_DIR/conf/local.conf
