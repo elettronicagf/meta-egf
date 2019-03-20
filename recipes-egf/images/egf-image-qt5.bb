@@ -86,7 +86,6 @@ IMAGE_INSTALL += " \
 IMAGE_INSTALL += " \
 ${QT5_IMAGE_INSTALL} \
 "
-export IMAGE_BASENAME = "fsl-image-qt5"
 
 fix_image() {
 
@@ -106,4 +105,6 @@ fix_image() {
 
 IMAGE_PREPROCESS_COMMAND += "fix_image"
 
-export IMAGE_BASENAME = "egf-image-qt5"
+export IMAGE_BASENAME = "egf-image-qt5-${GF_YOCTO_ROOTFS_VERSION}"
+export IMAGE_NAME = "${IMAGE_BASENAME}-${DATETIME}"
+export IMAGE_LINK_NAME = "${IMAGE_BASENAME}"

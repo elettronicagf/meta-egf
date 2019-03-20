@@ -3,7 +3,6 @@ PACKAGE_INSTALL = "initramfs-boot busybox udev base-passwd udev-extraconf dosfst
 
 GF_YOCTO_ROOTFS_LIVE_VERSION = "1.0"
 
-export IMAGE_BASENAME = "egf-image-update"
 IMAGE_LINGUAS = ""
 
 
@@ -30,3 +29,7 @@ write_version () {
 IMAGE_PREPROCESS_COMMAND += "write_version"
 
 BAD_RECOMMENDATIONS += "busybox-syslog"
+
+export IMAGE_BASENAME = "egf-image-update-${GF_YOCTO_ROOTFS_VERSION}"
+export IMAGE_NAME = "${IMAGE_BASENAME}-${DATETIME}"
+export IMAGE_LINK_NAME = "${IMAGE_BASENAME}"
