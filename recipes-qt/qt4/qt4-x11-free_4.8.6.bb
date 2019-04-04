@@ -1,7 +1,7 @@
 require qt4-x11-free.inc
 require qt4-${PV}.inc
 
-QT_SQL_DRIVER_FLAGS_remove = "-system-sqlite"
+QT_SQL_DRIVER_FLAGS_remove = "-system-sqlite -no-sql-sqlite2 "
 
 QT_CONFIG_FLAGS_append_arm = "${@bb.utils.contains("TUNE_FEATURES", "neon", "", " -no-neon" ,d)}"
 
