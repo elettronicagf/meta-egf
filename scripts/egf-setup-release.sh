@@ -5,7 +5,7 @@
 
 if [ -z "$MACHINE" ]; then
     echo setting to default machine
-    MACHINE='0510mbugrfimx6'
+    MACHINE='0510smggrf'
 fi
 
 source ./fsl-setup-release.sh "$@"
@@ -28,3 +28,4 @@ echo TMPDIR = $TMPDIR >> ./conf/local.conf
 fi
 
 echo "PACKAGE_CLASSES = \"package_ipk\"" >> $BUILD_DIR/conf/local.conf
+echo "INHERIT += \"rm_work\"" >> $BUILD_DIR/conf/local.conf
