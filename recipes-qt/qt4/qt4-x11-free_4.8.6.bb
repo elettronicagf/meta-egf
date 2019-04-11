@@ -19,4 +19,4 @@ QT_CONFIG_FLAGS += "\
 
 RRECOMMENDS_${PN}_remove = "libqtdeclarative4 libqtdesigner4 \
 							libqtdesignercomponents4 \ 
-							libqthelp4 "
+							libqthelp4 libqttest4 libqtclucene4"

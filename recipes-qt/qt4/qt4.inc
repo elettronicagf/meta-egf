@@ -142,6 +142,8 @@ RRECOMMENDS_${PN} = "${LIB_PACKAGES} ${GF_PACKAGES}"
 RRECOMMENDS_${PN}-dev = "${DEV_PACKAGES}"
 RRECOMMENDS_${PN}-dbg = "${DBG_PACKAGES}"
 RRECOMMENDS_${QT_BASE_LIB}core4_append_libc-glibc = " glibc-gconv-utf-16"
+RRECOMMENDS_${PN} += " ${QT_BASE_NAME}-plugin-sqldriver-sqlite "
+
 #RRECOMMENDS_${QT_BASE_NAME}-demos += " \
 #            ${QT_BASE_NAME}-examples \
 #            ${QT_BASE_NAME}-plugin-sqldriver-sqlite \
