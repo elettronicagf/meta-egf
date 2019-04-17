@@ -1,6 +1,6 @@
 DESCRIPTION = "SMGGRF Image"
 
-GF_YOCTO_ROOTFS_VERSION = "1.0"
+GF_YOCTO_ROOTFS_VERSION = "1.1"
 
 inherit core-image
 
@@ -21,16 +21,21 @@ CORE_IMAGE_EXTRA_INSTALL += " \
 IMAGE_FEATURES += "\
 	package-management \
 	read-only-rootfs \
-	x11-base x11-sato \
 "
+
+#	x11-base x11-sato 
 
 IMAGE_INSTALL += " \
     opkg-utils minicom opkg mc egf-gpio \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
     mtd-utils udev-extraconf egf-ota  \
-    x11vnc \
     gstreamer1.0-plugins-imx \
+    tslib tslib-calibrate tslib-conf tslib-tests \
+    openvpn \
 "
+
+#    x11vnc 
+
 
 #QT 5.8 - not required now
 IMAGE_INSTALL_QT5 += "qtbase \
@@ -43,7 +48,7 @@ IMAGE_INSTALL_QT5 += "qtbase \
                   cifs-utils \
 "
 
-IMAGE_INSTALL += "qt4-x11-free "
+IMAGE_INSTALL += "qt4-embedded "
 
 IMAGE_INSTALL_remove = "gstreamer1.0-plugins-bad-qt"
 
