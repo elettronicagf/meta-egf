@@ -36,6 +36,7 @@ QT_CONFIG_FLAGS += "-release -no-cups -reduce-relocations \
                     ${QT_GLFLAGS}"
 
 EXTRA_OEMAKE = "-e"
+CXXFLAGS += "--std=c++11"
 
 EXTRA_ENV = 'QMAKE="${STAGING_BINDIR_NATIVE}/qmake2 -after \
              INCPATH+=${STAGING_INCDIR}/freetype2 LIBS+=-L${STAGING_LIBDIR}" \
@@ -142,7 +143,11 @@ RRECOMMENDS_${PN} = "${LIB_PACKAGES} ${GF_PACKAGES}"
 RRECOMMENDS_${PN}-dev = "${DEV_PACKAGES}"
 RRECOMMENDS_${PN}-dbg = "${DBG_PACKAGES}"
 RRECOMMENDS_${QT_BASE_LIB}core4_append_libc-glibc = " glibc-gconv-utf-16"
-RRECOMMENDS_${PN} += " ${QT_BASE_NAME}-plugin-sqldriver-sqlite "
+RRECOMMENDS_${PN} += " ${QT_BASE_NAME}-plugin-sqldriver-sqlite \
+						${QT_BASE_NAME}-plugin-mousedriver-tslib \
+						${QT_BASE_NAME}-fonts-ttf-vera \
+						${QT_BASE_NAME}-fonts-ttf-dejavu \
+"
 
 #RRECOMMENDS_${QT_BASE_NAME}-demos += " \
 #            ${QT_BASE_NAME}-examples \
