@@ -31,7 +31,7 @@ IMAGE_INSTALL += " \
     mtd-utils udev-extraconf egf-ota  \
     gstreamer1.0-plugins-imx \
     tslib tslib-calibrate tslib-conf tslib-tests \
-    openvpn \
+    openvpn rsyslog fbset \
 "
 
 #    x11vnc 
