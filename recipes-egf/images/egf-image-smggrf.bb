@@ -50,7 +50,7 @@ IMAGE_INSTALL_QT5 += "qtbase \
 
 IMAGE_INSTALL += "qt4-embedded "
 
-IMAGE_INSTALL_remove = "gstreamer1.0-plugins-bad-qt"
+IMAGE_INSTALL_remove = "gstreamer1.0-plugins-bad-qt virtual/kernel"
 
 CONFLICT_DISTRO_FEATURES = "directfb"
 
