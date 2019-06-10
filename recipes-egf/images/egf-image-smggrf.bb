@@ -54,6 +54,13 @@ IMAGE_INSTALL_remove = "gstreamer1.0-plugins-bad-qt virtual/kernel"
 
 CONFLICT_DISTRO_FEATURES = "directfb"
 
+write_version () {
+#scrittura versione su filesystem
+	echo ${GF_YOCTO_ROOTFS_VERSION} > ${IMAGE_ROOTFS}/etc/version.gf
+}
+
+IMAGE_PREPROCESS_COMMAND += "write_version"
+
 IMAGE_FSTYPES = "tar.bz2"
 
 export IMAGE_BASENAME = "0510smggrf-${GF_YOCTO_ROOTFS_VERSION}"
