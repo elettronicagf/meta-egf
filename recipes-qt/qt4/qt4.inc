@@ -145,6 +145,7 @@ RRECOMMENDS_${PN}-dbg = "${DBG_PACKAGES}"
 RRECOMMENDS_${QT_BASE_LIB}core4_append_libc-glibc = " glibc-gconv-utf-16"
 RRECOMMENDS_${PN} += " ${QT_BASE_NAME}-plugin-sqldriver-sqlite \
 						${QT_BASE_NAME}-plugin-mousedriver-tslib \
+						${QT_BASE_NAME}-plugin-gfx-vnc \
 						${QT_BASE_NAME}-fonts-ttf-vera \
 						${QT_BASE_NAME}-fonts-ttf-dejavu \
 "

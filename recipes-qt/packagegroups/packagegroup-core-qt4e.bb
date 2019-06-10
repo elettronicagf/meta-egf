@@ -39,6 +39,8 @@ RDEPENDS_${PN} = " \
 	qt4-embedded-plugin-phonon-backend-gstreamer \
 	qt4-embedded-plugin-script-dbus \
 	qt4-embedded-plugin-sqldriver-sqlite \
+	qt4-embedded-plugin-gfx-qvfb \
+	qt4-embedded-plugin-gfx-vnc \
 	${TOUCH} \
         qt4-embedded-demos \
         qt4-embedded-examples \
