@@ -1,6 +1,6 @@
 DESCRIPTION = "SMGGRF Image"
 
-GF_YOCTO_ROOTFS_VERSION = "1.1"
+GF_YOCTO_ROOTFS_VERSION = "1.3"
 
 inherit core-image
 
@@ -33,6 +33,9 @@ IMAGE_INSTALL += " \
     tslib tslib-calibrate tslib-conf tslib-tests \
     rsyslog fbset pv \
     dosfstools e2fsprogs tar bzip2 \
+    cifs-utils \
+    glibc-gconv-ibm850 \
+    glibc-gconv-ibm437 \
 "
 
 #    x11vnc 
