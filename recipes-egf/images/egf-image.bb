@@ -5,7 +5,7 @@ LICENSE = "MIT"
 
 inherit core-image
 
-GF_YOCTO_ROOTFS_VERSION = "1.1"
+GF_YOCTO_ROOTFS_VERSION = "1.2"
 
 IMAGE_FEATURES += "${@base_contains('DISTRO_FEATURES', 'x11', \
                             ' x11-base x11-sato hwcodecs', '', d)}"
@@ -23,8 +23,7 @@ IMAGE_INSTALL += " \
     mtd-utils \
 "
 
-IMAGE_INSTALL += "${@base_contains('MACHINE', '0541evbpopimx6',  ' egf-wireless-wl18xx', '', d)}"
-IMAGE_INSTALL += "${@base_contains('MACHINE', '0533panelpcimx6', ' egf-wireless', '', d)}"  
+IMAGE_INSTALL += " egf-wireless egf-wireless-atwilc3000 "
 
 CONFLICT_DISTRO_FEATURES = "directfb"
 
