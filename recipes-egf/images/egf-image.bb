@@ -77,6 +77,7 @@ fix_image() {
 
 
 IMAGE_PREPROCESS_COMMAND += "fix_image"
+IMAGE_FSTYPES = "tar.bz2"
 
 export IMAGE_BASENAME = "egf-image-${GF_YOCTO_ROOTFS_VERSION}"
 export IMAGE_NAME = "${IMAGE_BASENAME}-${DATETIME}"
