@@ -75,8 +75,13 @@ fix_image() {
 		mv ${IMAGE_ROOTFS}/usr/share/pixmaps/matchbox-keyboard-new.png ${IMAGE_ROOTFS}/usr/share/pixmaps/matchbox-keyboard.png		
 }
 
+write_version () {
+	echo ${GF_YOCTO_ROOTFS_VERSION} > ${IMAGE_ROOTFS}/etc/version.gf
+}
 
-IMAGE_PREPROCESS_COMMAND += "fix_image"
+IMAGE_PREPROCESS_COMMAND += "write_version;"
+IMAGE_PREPROCESS_COMMAND += "fix_image;"
+
 IMAGE_FSTYPES = "tar.bz2"
 
 export IMAGE_BASENAME = "egf-image-${GF_YOCTO_ROOTFS_VERSION}"
