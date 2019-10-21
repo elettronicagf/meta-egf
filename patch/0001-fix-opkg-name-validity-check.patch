@@ -1,0 +1,75 @@
+From a3e05407aa941efbba3edfda4aa1da7b4437dc6a Mon Sep 17 00:00:00 2001
+From: yocto <yocto@androidbuilder>
+Date: Tue, 24 Sep 2019 16:40:46 +0200
+Subject: [PATCH] fix opkg name validity check
+
+---
+ ...003-fix-name-validity-check-in-opkg-build.patch | 43 ++++++++++++++++++++++
+ .../opkg-utils/opkg-utils_0.3.6.bb                 |  1 +
+ 2 files changed, 44 insertions(+)
+ create mode 100644 meta/recipes-devtools/opkg-utils/opkg-utils/0003-fix-name-validity-check-in-opkg-build.patch
+
+diff --git a/meta/recipes-devtools/opkg-utils/opkg-utils/0003-fix-name-validity-check-in-opkg-build.patch b/meta/recipes-devtools/opkg-utils/opkg-utils/0003-fix-name-validity-check-in-opkg-build.patch
+new file mode 100644
+index 0000000..3546dac
+--- /dev/null
++++ b/meta/recipes-devtools/opkg-utils/opkg-utils/0003-fix-name-validity-check-in-opkg-build.patch
+@@ -0,0 +1,43 @@
++From 64dbae1b3032e64a7d859c0bd4d87a01c3c0e927 Mon Sep 17 00:00:00 2001
++From: yocto <yocto@androidbuilder>
++Date: Tue, 24 Sep 2019 14:29:23 +0000
++Subject: [PATCH] fix name validity check in opkg-build
++
++---
++ opkg-build        | 4 ++--
++ opkg-buildpackage | 4 ++--
++ 2 files changed, 4 insertions(+), 4 deletions(-)
++
++diff --git a/opkg-build b/opkg-build
++index c3b8d0c..8472984 100755
++--- a/opkg-build
+++++ b/opkg-build
++@@ -107,8 +107,8 @@ You probably want to chown these to a system user: " >&2
++ 	disallowed_filename=`disallowed_field Filename`
++ 	[ "$?" -ne 0 ] && PKG_ERROR=1
++ 
++-	if echo $pkg | grep '[^a-z0-9.+-]'; then
++-		echo "*** Error: Package name $pkg contains illegal characters, (other than [a-z0-9.+-])" >&2
+++	if echo $pkg | grep '[^a-z0-9.+-_]'; then
+++		echo "*** Error: Package name $pkg contains illegal characters, (other than [a-z0-9.+-_])" >&2
++ 		PKG_ERROR=1;
++ 	fi
++ 
++diff --git a/opkg-buildpackage b/opkg-buildpackage
++index b7c0e8c..be4d50b 100755
++--- a/opkg-buildpackage
+++++ b/opkg-buildpackage
++@@ -65,8 +65,8 @@ pkg_appears_sane_control() {
++ 	required_field Maintainer >/dev/null
++ 	required_field Description >/dev/null
++ 
++-	if echo $pkg | grep '[^a-z0-9.+-]'; then
++-		echo "opkg-build: Error: Package name $pkg contains illegal characters, (other than [a-z0-9.+-])"
+++	if echo $pkg | grep '[^a-z0-9.+-_]'; then
+++		echo "opkg-build: Error: Package name $pkg contains illegal characters, (other than [a-z0-9.+-_])"
++ 		PKG_ERROR=1;
++ 	fi
++ 
++-- 
++2.7.4
++
+diff --git a/meta/recipes-devtools/opkg-utils/opkg-utils_0.3.6.bb b/meta/recipes-devtools/opkg-utils/opkg-utils_0.3.6.bb
+index 0487c5f..a417e85 100644
+--- a/meta/recipes-devtools/opkg-utils/opkg-utils_0.3.6.bb
++++ b/meta/recipes-devtools/opkg-utils/opkg-utils_0.3.6.bb
+@@ -11,6 +11,7 @@ SRC_URI = "http://git.yoctoproject.org/cgit/cgit.cgi/${BPN}/snapshot/${BPN}-${PV
+            file://0001-Switch-all-scripts-to-use-Python-3.x.patch \
+            file://0001-Only-use-sort-name-on-versions-of-tar-which-support-.patch \
+            file://0002-opkg-build-Use-local-time-for-build_date-since-opkg-.patch \
++           file://0003-fix-name-validity-check-in-opkg-build.patch \
+            file://threaded-xz.patch \
+ "
+ SRC_URI_append_class-native = " file://tar_ignore_error.patch"
+-- 
+2.7.4
+

@@ -4,13 +4,13 @@
 #
 
 if [ -z "$MACHINE" ]; then
-    echo setting to default machine
-    MACHINE='0571consolesmart'
+    echo Error: machine missing
+	exit
 fi
 
 source ./fsl-setup-release.sh "$@"
 
-echo "BBLAYERS += \" \${BSPDIR}/sources/meta-cefla \"" >> $BUILD_DIR/conf/bblayers.conf
+echo "BBLAYERS += \" \${BSPDIR}/sources/meta-egf \"" >> $BUILD_DIR/conf/bblayers.conf
 
 if [ $(hostname) = "androidbuilder" ]; then
 
@@ -26,7 +26,7 @@ echo TMPDIR = $TMPDIR >> ./conf/local.conf
 
 fi
 
-echo "PACKAGE_CLASSES = \"package_ipk\"" >> $BUILD_DIR/conf/local.conf
-echo "PACKAGECONFIG_append_pn-qtbase = \" fontconfig\"" >> $BUILD_DIR/conf/local.conf
-echo "PACKAGECONFIG_append_pn-qtbase = \" accessibility\"" >> $BUILD_DIR/conf/local.conf
+echo "RM_OLD_IMAGE = \"1\"" >> $BUILD_DIR/conf/local.conf
+echo "INHERIT += \"rm_work\"" >> $BUILD_DIR/conf/local.conf
+
 

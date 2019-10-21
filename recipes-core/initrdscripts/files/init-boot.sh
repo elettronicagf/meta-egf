@@ -192,7 +192,7 @@ fi;
 
 #Extract setup.sh script
 message "Extracting setup.sh script from update package"
-tail -c +$UPDATE_TAR_OFFSET $UPDATE_PATH | openssl enc -aes-256-cbc -d -pass pass:$PASSWORD 2> /dev/null | tar xm --occurrence=1 -C / setup.sh
+tail -c +$UPDATE_TAR_OFFSET $UPDATE_PATH | openssl enc -aes-256-cbc -md md5 -d -pass pass:$PASSWORD 2> /dev/null | tar xm --occurrence=1 -C / setup.sh
 
 if [ $? -ne 0 ]; then
   error_handler "Unable to extract setup.sh script from update package"
