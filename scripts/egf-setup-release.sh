@@ -1,3 +1,4 @@
+
 #!/bin/sh
 #
 # ElettronicaGF Build Enviroment Setup Script
@@ -26,6 +27,7 @@ echo TMPDIR = $TMPDIR >> ./conf/local.conf
 
 fi
 
+echo "PACKAGE_CLASSES = \"package_ipk\"" >> $BUILD_DIR/conf/local.conf
 echo "RM_OLD_IMAGE = \"1\"" >> $BUILD_DIR/conf/local.conf
 echo "INHERIT += \"rm_work\"" >> $BUILD_DIR/conf/local.conf
 
