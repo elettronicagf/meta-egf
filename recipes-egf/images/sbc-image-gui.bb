@@ -1,6 +1,6 @@
 LICENSE = "MIT"
 
-GF_YOCTO_ROOTFS_VERSION = "1.0"
+GF_YOCTO_ROOTFS_VERSION = "1.1"
 
 inherit core-image
 
@@ -17,7 +17,7 @@ IMAGE_INSTALL += " \
     minicom egf-gpio canutils iproute2 \
     openssh openssh-sftp-server nano strace i2c-tools gdb gdbserver \
     mtd-utils udev-extraconf egf-ota psplash \
-    minicom fbset opkg-utils iperf3 iperf2 \
+    minicom fbset opkg opkg-utils iperf3 iperf2 \
     glibc-gconv-ibm850 glibc-gconv-ibm437 \
     bluez5 atwilc3000 \
     tslib tslib-calibrate tslib-conf tslib-tests \
