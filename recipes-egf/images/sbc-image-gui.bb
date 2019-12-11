@@ -1,6 +1,6 @@
 LICENSE = "MIT"
 
-GF_YOCTO_ROOTFS_VERSION = "1.1"
+GF_YOCTO_ROOTFS_VERSION = "1.2"
 
 inherit core-image
 
@@ -19,7 +19,7 @@ IMAGE_INSTALL += " \
     mtd-utils udev-extraconf egf-ota psplash \
     minicom fbset opkg opkg-utils iperf3 iperf2 \
     glibc-gconv-ibm850 glibc-gconv-ibm437 \
-    bluez5 atwilc3000 \
+    bluez5 atwilc3000 dhcp-server hostapd \
     tslib tslib-calibrate tslib-conf tslib-tests \
 "
 
@@ -35,9 +35,11 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland xterm', '', d)} \
 "
 
-#    packagegroup-fsl-tools-testapps 
-#    packagegroup-fsl-tools-benchmark 
+write_version () {
+	echo ${GF_YOCTO_ROOTFS_VERSION} > ${IMAGE_ROOTFS}/etc/version.gf
+}
 
+IMAGE_PREPROCESS_COMMAND += "write_version; "
 
 IMAGE_FSTYPES = "tar.bz2"
 
