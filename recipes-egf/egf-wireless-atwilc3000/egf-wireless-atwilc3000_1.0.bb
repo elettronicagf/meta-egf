@@ -1,25 +1,23 @@
-SUMMARY = "File binari configurazione modulo atwilc3000"
-DESCRIPTION = "File binari configurazione modulo atwilc3000"
-SECTION = "base"
+SUMMARY = "Firmware wifi/ble atmel ATWILC3000"
+DESCRIPTION = "Firmware wifi/ble atmel ATWILC3000"
+SECTION = "wireless"
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://wilc3000_wifi_firmware.bin;md5=ba289e68f2e451f936adb081d27292aa"
+LIC_FILES_CHKSUM = "file://README.md;md5=b5aee967899c0de3fb19e1891675dd87"
 PR = "r1"
 
-SRCREV = "wilc_linux_15_2_1"
-SRC_URI = "git://github.com/linux4wilc/firmware.git;protocol=https"
-SRC_URI[md5sum] = "1d6c908e3d254e07230ac0db30f12f92"
+#tag "wilc_linux_15_3"
+SRCREV = "2400007a8a4c5681071db23004600a558a9e50de"
+SRC_URI = "git://github.com/linux4wilc/firmware.git;protocol=https;branch=master"
+SRC_URI[md5sum] = "aa3933211a23a5d899b2dd8f8f6f8b07"
+
+FILES_${PN} += "/lib/firmware/mchp"
 
 S = "${WORKDIR}/git"
 
-do_compile() {
-	:
+INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
+INSANE_SKIP_${PN} = "ldflags"
+
+do_install_append () {
+	install -d ${D}/lib/firmware/mchp
+    install -m 0755 ${S}/wilc3000*  ${D}/lib/firmware/mchp
 }
-
-do_install () {
-		install -d ${D}/lib/firmware/mchp
-		install -m 0644 *.bin ${D}/lib/firmware/mchp
-}
-
-FILES_${PN} += "/lib/firmware/mchp "
-
-ALLOW_EMPTY_${PN} = "1"
