@@ -5,9 +5,9 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://README.md;md5=b5aee967899c0de3fb19e1891675dd87"
 PR = "r1"
 
-#tag "wilc_linux_15_3_2"
-SRCREV = "1d25b5b09411461f86b1323351206ac06a45a14b"
-SRC_URI = "git://github.com/linux4wilc/firmware.git;protocol=https;branch=dev"
+#tag "wilc_linux_15_3"
+SRCREV = "2400007a8a4c5681071db23004600a558a9e50de"
+SRC_URI = "git://github.com/linux4wilc/firmware.git;protocol=https;branch=master"
 SRC_URI[md5sum] = "aa3933211a23a5d899b2dd8f8f6f8b07"
 
 FILES_${PN} += "/lib/firmware/mchp"
