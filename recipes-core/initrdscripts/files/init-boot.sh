@@ -6,31 +6,59 @@ SOURCE1="/run/media/sda1"
 SOURCE2="/run/media/sda"
 PASSWORD="8fX589i2ed_@YT#xx++]]00$aqe34=="
 
+message() {
+	if [ $CONSOLE_DEV == "null" ]; then
+		echo $1 >> $SOURCE1/updatelog.txt
+	else
+		echo $1 >$CONSOLE
+	fi
+}
+
 fatal() {
-    echo $1 >$CONSOLE
-    echo >$CONSOLE
+	if [ $CONSOLE_DEV == "null" ]; then
+		echo $1 >> $SOURCE1/updatelog.txt
+	else
+		echo $1 >$CONSOLE
+		echo >$CONSOLE
+	fi
     exec sh
 }
 
 exec_update() {
 	target_sdk_dir=/tmp/update
 	mkdir -p $target_sdk_dir
-	
-	[ -f $1/update-splash.gz ] && zcat $1/update-splash.gz > /dev/fb0
-	
-	unzip -P$PASSWORD $1/$UPDATE_SCRIPT -d  $target_sdk_dir
+	message "Starting update"
+	sync
+	unzip -P$PASSWORD $1/$UPDATE_SCRIPT -d  $target_sdk_dir >> $SOURCE1/updatelog.txt
+
 	if [ $? -ne 0 ]; then
 		export ERROR_UPDATE="UNZIP_ERROR"
 	fi	
 	
+	geometry=$(fbset | grep geometry)
+
+	sync
+	xres=$(echo $geometry | awk -F " " '{print $2}')
+	yres=$(echo $geometry | awk -F " " '{print $3}')
+
+	res=${xres}x${yres}
+	sync
+
+	[ -f $target_sdk_dir/update-splash-$res.gz ] && zcat $target_sdk_dir/update-splash-$res.gz > /dev/fb0	
+	
 	chmod +x $target_sdk_dir/*.sh
 
-	#tar -C$target_sdk_dir -xvf $target_sdk_dir/update.tar
+	message "Launching setup.sh"
+	sync
 	$target_sdk_dir/setup.sh
 
 	sync
 	umount $1
-	echo >$CONSOLE
+	
+	if [ $CONSOLE_DEV != "null" ]; then
+		echo >$CONSOLE
+	fi
+
 	exec sh
 }
 
@@ -50,7 +78,12 @@ udevadm settle --timeout=5
 
 [ -z "$CONSOLE" ] && CONSOLE="/dev/console"
 
-echo "Look For Update Script..."
+CONSOLE_DEV=$(cat /proc/cmdline | sed -e 's/^.*console=//' -e 's/,.*$//')
+echo $CONSOLE_DEV >> $SOURCE1/updatelog.txt
+
+message "Look For Update Script..."
+
+
 if [ -f $SOURCE1/$UPDATE_SCRIPT ] ; then
 	exec_update $SOURCE1
 else	
