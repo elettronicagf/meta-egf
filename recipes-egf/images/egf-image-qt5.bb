@@ -10,6 +10,7 @@ CONFLICT_DISTRO_FEATURES = "directfb"
 
 # Added for egf image
 IMAGE_INSTALL += " egf-wireless-atwilc3000 "
+IMAGE_INSTALL += " egf-gpio "
 
 # Add machine learning for certain SoCs
 ML_PKGS                   ?= ""
