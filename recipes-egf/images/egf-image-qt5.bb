@@ -11,6 +11,14 @@ CONFLICT_DISTRO_FEATURES = "directfb"
 # Added for egf image
 IMAGE_INSTALL += " egf-wireless-atwilc3000 "
 IMAGE_INSTALL += " egf-gpio "
+IMAGE_INSTALL += " openssh "
+IMAGE_INSTALL += " openssh-sftp-server "
+#IMAGE_INSTALL += " gdb gdb-server "
+IMAGE_INSTALL += " minicom "
+IMAGE_INSTALL += " opkg opkg-utils "
+IMAGE_INSTALL += " mc "
+IMAGE_INSTALL += " nano strace i2c-tools mtd-utils "
+
 
 # Add machine learning for certain SoCs
 ML_PKGS                   ?= ""
