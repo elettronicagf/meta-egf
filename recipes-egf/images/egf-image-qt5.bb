@@ -6,6 +6,8 @@ require recipes-fsl/images/imx-image-multimedia.bb
 
 inherit populate_sdk_qt5
 
+GF_YOCTO_ROOTFS_VERSION = "1.0"
+
 CONFLICT_DISTRO_FEATURES = "directfb"
 
 # Added for egf image
@@ -50,3 +52,9 @@ IMAGE_INSTALL += " \
 TOOLCHAIN_TARGET_TASK += " \
     ${ML_STATICDEV} \
 "
+
+write_version () {
+	echo ${GF_YOCTO_ROOTFS_VERSION} > ${IMAGE_ROOTFS}/etc/version.gf
+}
+
+IMAGE_PREPROCESS_COMMAND += "write_version;"
