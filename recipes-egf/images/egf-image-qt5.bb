@@ -6,9 +6,22 @@ require recipes-fsl/images/imx-image-multimedia.bb
 
 inherit populate_sdk_qt5
 
-GF_YOCTO_ROOTFS_VERSION = "1.0"
+GF_YOCTO_ROOTFS_VERSION = "1.02"
 
 CONFLICT_DISTRO_FEATURES = "directfb"
+
+inherit core-image
+
+IMAGE_FEATURES += " \
+    splash \
+    hwcodecs \
+"
+
+CORE_IMAGE_EXTRA_INSTALL += " \
+    packagegroup-core-full-cmdline \
+    packagegroup-fsl-gstreamer1.0 \
+    packagegroup-fsl-gstreamer1.0-full \
+"
 
 # Added for egf image
 IMAGE_INSTALL += " egf-wireless-atwilc3000 "
@@ -20,7 +33,25 @@ IMAGE_INSTALL += " minicom "
 IMAGE_INSTALL += " opkg opkg-utils "
 IMAGE_INSTALL += " mc "
 IMAGE_INSTALL += " nano strace i2c-tools mtd-utils "
-
+IMAGE_INSTALL += " lighttpd "
+IMAGE_INSTALL += " python3 python3-pip "
+IMAGE_INSTALL += " lighttpd-module-alias "
+IMAGE_INSTALL += " lighttpd-module-redirect "
+IMAGE_INSTALL += " glibc-utils "
+IMAGE_INSTALL += " localedef "
+IMAGE_INSTALL += " curl "
+IMAGE_INSTALL += " ntp "
+IMAGE_INSTALL += " p7zip "
+IMAGE_INSTALL += " gstreamer1.0-plugins-imx "
+IMAGE_INSTALL += " wget "
+IMAGE_INSTALL += " qtquickcontrols "
+IMAGE_INSTALL += " qtquickcontrols2 "
+IMAGE_INSTALL += " qtmultimedia "
+IMAGE_INSTALL += " qtmultimedia-plugins "
+IMAGE_INSTALL += " qtmultimedia-qmlplugins "
+IMAGE_INSTALL += " gstreamer1.0 "
+IMAGE_INSTALL += " gstreamer1.0-plugins-good "
+IMAGE_INSTALL += " gstreamer1.0-plugins-imx "
 
 # Add machine learning for certain SoCs
 ML_PKGS                   ?= ""
