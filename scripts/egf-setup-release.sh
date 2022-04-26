@@ -5,8 +5,8 @@
 #
 
 if [ -z "$MACHINE" ]; then
-    echo Error: machine missing
-	exit
+    echo setting to default machine
+    MACHINE='0510smggrf'
 fi
 
 source ./fsl-setup-release.sh "$@"
@@ -44,5 +44,5 @@ fi
 echo "PACKAGE_CLASSES = \"package_ipk\"" >> $BUILD_DIR/conf/local.conf
 echo "RM_OLD_IMAGE = \"1\"" >> $BUILD_DIR/conf/local.conf
 echo "INHERIT += \"rm_work\"" >> $BUILD_DIR/conf/local.conf
-
+echo "DISTRO_FEATURES_append += \"pam\"" >> $BUILD_DIR/conf/local.conf
 
