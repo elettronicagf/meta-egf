@@ -1,0 +1,34 @@
+From 8eaeec0577455fce11d85b32b887cd56db674951 Mon Sep 17 00:00:00 2001
+From: yocto <yocto@elettronicagf.it>
+Date: Tue, 26 Apr 2022 09:21:00 +0200
+Subject: =?UTF-8?q?modificata=20tipologia=20del=20pacchetto=20per=20indisp?=
+ =?UTF-8?q?onibilit=C3=A0=20dello=20stesso?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+
+diff --git a/meta/recipes-connectivity/nfs-utils/nfs-utils_2.1.1.bb b/meta/recipes-connectivity/nfs-utils/nfs-utils_2.1.1.bb
+index 79453ad20c..1770140b70 100644
+--- a/meta/recipes-connectivity/nfs-utils/nfs-utils_2.1.1.bb
++++ b/meta/recipes-connectivity/nfs-utils/nfs-utils_2.1.1.bb
+@@ -18,7 +18,7 @@ USERADD_PACKAGES = "${PN}-client"
+ USERADD_PARAM_${PN}-client = "--system  --home-dir /var/lib/nfs \
+ 			      --shell /bin/false --user-group rpcuser"
+ 
+-SRC_URI = "${KERNELORG_MIRROR}/linux/utils/nfs-utils/${PV}/nfs-utils-${PV}.tar.xz \
++SRC_URI = "${KERNELORG_MIRROR}/linux/utils/nfs-utils/${PV}/nfs-utils-${PV}.tar.gz \
+            file://0001-configure-Allow-to-explicitly-disable-nfsidmap.patch \
+            file://nfs-utils-1.2.3-sm-notify-res_init.patch \
+            file://nfsserver \
+@@ -34,8 +34,8 @@ SRC_URI = "${KERNELORG_MIRROR}/linux/utils/nfs-utils/${PV}/nfs-utils-${PV}.tar.x
+            file://0001-include-stdint.h-for-UINT16_MAX-definition.patch \
+ "
+ 
+-SRC_URI[md5sum] = "59dfcb2e6254b129f901f40c86086b13"
+-SRC_URI[sha256sum] = "0faeb54c70b84e6bd3b9b6901544b1f6add8d246f35c1683e402daf4e0c719ef"
++SRC_URI[md5sum] = "d7aef21a30715b4cf5ce9038dc7789b8"
++SRC_URI[sha256sum] = "381bb3f6aa4b314538db0bcfb242da855c2eb36e2059cf61aa498c0220684363"
+ 
+ # Only kernel-module-nfsd is required here (but can be built-in)  - the nfsd module will
+ # pull in the remainder of the dependencies.
