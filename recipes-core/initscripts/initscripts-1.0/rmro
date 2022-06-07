@@ -1,0 +1,1 @@
+mount -n -o remount,ro /
