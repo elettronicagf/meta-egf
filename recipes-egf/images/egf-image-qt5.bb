@@ -14,8 +14,11 @@ inherit core-image
 
 IMAGE_FEATURES += " \
     splash \
-    hwcodecs \
 "
+
+#IMAGE_FEATURES += " \
+#    hwcodecs \
+#"
 
 CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-core-full-cmdline \
@@ -42,7 +45,7 @@ IMAGE_INSTALL += " localedef "
 IMAGE_INSTALL += " curl "
 IMAGE_INSTALL += " ntp "
 IMAGE_INSTALL += " p7zip "
-IMAGE_INSTALL += " gstreamer1.0-plugins-imx "
+#IMAGE_INSTALL += " gstreamer1.0-plugins-imx "
 IMAGE_INSTALL += " wget "
 IMAGE_INSTALL += " qtquickcontrols "
 IMAGE_INSTALL += " qtquickcontrols2 "
@@ -51,7 +54,7 @@ IMAGE_INSTALL += " qtmultimedia-plugins "
 IMAGE_INSTALL += " qtmultimedia-qmlplugins "
 IMAGE_INSTALL += " gstreamer1.0 "
 IMAGE_INSTALL += " gstreamer1.0-plugins-good "
-IMAGE_INSTALL += " gstreamer1.0-plugins-imx "
+#IMAGE_INSTALL += " gstreamer1.0-plugins-imx "
 
 # Add machine learning for certain SoCs
 ML_PKGS                   ?= ""
@@ -66,15 +69,17 @@ ML_PKGS_mx8mnul            = ""
 ML_STATICDEV_mx8mnul       = ""
 
 # Add opencv for i.MX GPU
-OPENCV_PKGS       ?= ""
-OPENCV_PKGS_imxgpu = " \
-    opencv-apps \
-    opencv-samples \
-    python3-opencv \
-"
+#OPENCV_PKGS       ?= ""
+#OPENCV_PKGS_imxgpu = " \
+#    opencv-apps \
+#    opencv-samples \
+#    python3-opencv \
+#"
 
+#IMAGE_INSTALL += " \
+#    ${OPENCV_PKGS} \
+#"
 IMAGE_INSTALL += " \
-    ${OPENCV_PKGS} \
     ${ML_PKGS} \
     packagegroup-qt5-imx \
     tzdata \
