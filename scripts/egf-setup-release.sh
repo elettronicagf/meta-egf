@@ -94,7 +94,7 @@ fi
 
 if [ -z "$MACHINE" ]; then
     echo setting to default machine
-    MACHINE='imx6qpsabresd'
+    MACHINE='imx8mm-ddr4-evk'
 fi
 
 case $MACHINE in
@@ -210,24 +210,27 @@ fi
 cd  $BUILD_DIR
 
 # *** Modified egf ***********************************************
-if [ $(hostname) = "dockerbuilder" ]; then
-
 YOCTO_BASE_PATH=\"/home/yocto\"
 DL_DIR=\"/home/yocto/downloads\"
-SSTATE_DIR=\"/home/yocto/yocto-output/\${MACHINE}/sstate-cache\"
-TMPDIR=\"/home/yocto/yocto-output/\${MACHINE}/tmp\"
+SSTATE_DIR=\"/home/yocto/yocto-output/sstate-cache\"
+TMPDIR=\"/home/yocto/yocto-output/tmp\"
 
 echo YOCTO_BASE_PATH = $YOCTO_BASE_PATH >> ./conf/local.conf
 echo DL_DIR = $DL_DIR >> ./conf/local.conf
 echo SSTATE_DIR = $SSTATE_DIR >> ./conf/local.conf
 echo TMPDIR = $TMPDIR >> ./conf/local.conf
+echo "QT_MODULE_BRANCH_PARAM_append = \";nobranch=1\"" >> ./conf/local.conf
 
-else
-        echo "no dedicated variables for this host"
-fi
 # ****************************************************************
 
 echo "CORE_IMAGE_EXTRA_INSTALL += \"chromium-ozone-wayland\"" >> ./conf/local.conf
+echo "BB_FETCH_PREMIRRORONLY= \"1\"" >> ./conf/local.conf
+echo "#BB_GENERATE_MIRROR_TARBALLS = \"1\"" >> ./conf/local.conf
+echo "FETCHCMD_wget=\"/usr/bin/env wget -t 2 -T 30 --no-passive-ftp --no-check-certificate\"" >> ./conf/local.conf
+echo "SOURCE_MIRROR_URL=\"ftp://YoctoShare:YoctoShare_159@ftp.elettronicagf.it:21/yocto/hardknott/downloads/\"" >> ./conf/local.conf
+echo "INHERIT+=\"own-mirrors\"" >> ./conf/local.conf
+
+
 
 clean_up
 unset FSLDISTRO
