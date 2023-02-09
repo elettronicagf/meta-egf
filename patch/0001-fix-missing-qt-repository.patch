@@ -1,0 +1,27 @@
+From 2e35f1b77f0c56cff009faa819b1b6142edf4c53 Mon Sep 17 00:00:00 2001
+From: Alberto Alvarez <alberto.alvarez@nxp.com>
+Date: Tue, 17 Jan 2023 12:07:42 -0700
+Subject: [PATCH] fix missing qt repository
+
+---
+ conf/layer.conf | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/conf/layer.conf b/conf/layer.conf
+index 9c8844d..8f2c60b 100644
+--- a/conf/layer.conf
++++ b/conf/layer.conf
+@@ -35,7 +35,7 @@ LICENSE_PATH += "${LAYERDIR}/licenses"
+ 
+ IMAGE_FEATURES[validitems] += "qtcreator-debug"
+ 
+-QT_GIT_PROJECT ?= "qt"
+-QT_GIT ?= "git://code.qt.io/${QT_GIT_PROJECT}"
+-QT_GIT_PROTOCOL ?= "git"
++QT_GIT_PROJECT ?= "qtmirror"
++QT_GIT ?= "git://gitlab.com/${QT_GIT_PROJECT}"
++QT_GIT_PROTOCOL ?= "https"
+ QT_EDITION ?= "opensource"
+-- 
+2.25.1
+
